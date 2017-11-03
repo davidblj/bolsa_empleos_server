@@ -31,3 +31,5 @@ Para iniciar el servidor:
 Para ejecutar el cliente:
 
 > npm run startProxy
+
+# Integración continua en codeship
