@@ -33,3 +33,4 @@ Para ejecutar el cliente:
 > npm run startProxy
 
 # Integración continua en codeship
+# deploy en heroku

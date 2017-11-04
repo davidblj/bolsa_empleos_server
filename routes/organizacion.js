@@ -6,8 +6,24 @@ module.exports = function(wagner) {
 
     let api = express.Router();
 
+
+
     // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
     // Request headers:  name: Content-Type  value: application/json
+    api.get('/listarEmpresas', wagner.invoke(function (User) {
+
+        return function (req, res) {
+
+            User.find({}, '_id companyName').exec(function (error, User) {
+                if (error) {
+                    return res.status(status.INTERNAL_SERVER_ERROR).json({error: error.toString()});
+                }
+                // todo: set a response for no results
+
+                res.json(User);
+            })
+        };
+    }));
     api.get('/listarEmpresas', wagner.invoke(function (User) {
 
         return function (req, res) {
