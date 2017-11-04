@@ -10,6 +10,15 @@ module.exports = function(wagner) {
 
     // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
     // Request headers:  name: Content-Type  value: application/json
+
+    api.get('/', wagner.invoke(function (User) {
+
+        return function (req, res) {
+
+           return res.status(200).json({'Hola ': 'Heroku'});
+        };
+    }));
+
     api.get('/listarEmpresas', wagner.invoke(function (User) {
 
         return function (req, res) {
@@ -20,7 +29,7 @@ module.exports = function(wagner) {
                 }
                 // todo: set a response for no results
 
-                res.json(User);
+                res.status(200).json(User);
             })
         };
     }));
