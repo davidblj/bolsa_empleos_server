@@ -28,23 +28,11 @@ module.exports = function(wagner) {
                 }
                 // todo: set a response for no results
 
-                res.status(200).json(User);
-            })
-        };
-    }));
-    api.get('/listarEmpresas', wagner.invoke(function (User) {
-
-        return function (req, res) {
-
-            User.find({}, '_id companyName').exec(function (error, User) {
-                if (error) {
-                    return res.status(status.INTERNAL_SERVER_ERROR).json({error: error.toString()});
-                }
-                // todo: set a response for no results
                 res.json(User);
             })
         };
     }));
+
 
     // Registre al nuevo usuario: http://localhost:3000/organizacion/registrar
     // Request headers:  name: Content-Type  value: application/json
