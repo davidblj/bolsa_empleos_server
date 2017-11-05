@@ -77,7 +77,9 @@ module.exports = function(wagner) {
                         }
 
                         let content = { message: 'Successful registration' };
-                        res.json(content);
+                        res
+                            .status(status.CREATED)
+                            .json(content);
                     });
                 });
             });
