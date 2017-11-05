@@ -1,4 +1,4 @@
-let config = require('../config/settings');
+let config = require('../config/index');
 let jwt = require('jsonwebtoken');
 let status = require('http-status');
 

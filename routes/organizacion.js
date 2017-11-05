@@ -6,11 +6,6 @@ module.exports = function(wagner) {
 
     let api = express.Router();
 
-
-
-    // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
-    // Request headers:  name: Content-Type  value: application/json
-
     api.get('/', wagner.invoke(function (User) {
 
         return function (req, res) {
@@ -19,13 +14,17 @@ module.exports = function(wagner) {
         };
     }));
 
+    // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
+    // Request headers:  name: Content-Type  value: application/json
     api.get('/listarEmpresas', wagner.invoke(function (User) {
 
         return function (req, res) {
 
             User.find({}, '_id companyName').exec(function (error, User) {
                 if (error) {
-                    return res.status(status.INTERNAL_SERVER_ERROR).json({error: error.toString()});
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json({error: error.toString()});
                 }
                 // todo: set a response for no results
 
@@ -42,7 +41,6 @@ module.exports = function(wagner) {
                     return res.status(status.INTERNAL_SERVER_ERROR).json({error: error.toString()});
                 }
                 // todo: set a response for no results
-
                 res.json(User);
             })
         };
@@ -61,7 +59,7 @@ module.exports = function(wagner) {
             let errors = req.validationErrors();
 
             if(errors) {
-                console.error('errors: ', errors);
+                // console.error('errors: ', errors);
                 return res.status(status.BAD_REQUEST).send(errors);
             }
 

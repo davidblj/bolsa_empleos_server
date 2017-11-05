@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 let crypto = require('crypto');
 let jwt = require('jsonwebtoken');
-let config = require('../../config/settings');
+let config = require('../../config/index');
 
 let userSchema = {
 
@@ -33,7 +33,7 @@ schema.methods.validPassword = function (password) {
 
 schema.virtual('password').set(function (password) {
     this.setPassword(password);
-})
+});
 
 schema.methods.generateJwt = function () {
     let expiry = new Date();

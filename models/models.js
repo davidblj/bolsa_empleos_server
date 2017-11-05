@@ -1,11 +1,12 @@
 let mongoose = require('mongoose');
 let _ = require('underscore');
-let config = require('../config/settings');
+let config = require('../config/index');
 
 module.exports = function(wagner) {
 
     mongoose.connect(config.database);
 
+    // todo: change "User" to "CompanyUser"
     let User = mongoose.model('User', require('./organizacion/user'), 'users');
     let Job = mongoose.model('Job', require('./organizacion/job'), 'jobs');
 
