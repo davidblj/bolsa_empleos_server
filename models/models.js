@@ -8,11 +8,11 @@ module.exports = function(wagner) {
     mongoose.connect(config.database, {useMongoClient: true});
 
     // todo: change "User" to "CompanyUser"
-    let User = mongoose.model('User', require('./organizacion/user'), 'users');
+     let CompanyUser = mongoose.model('User', require('./organizacion/user'), 'companyUsers');
     let Job = mongoose.model('Job', require('./organizacion/job'), 'jobs');
 
     let models = {
-        User: User,
+        CompanyUser: CompanyUser,
         Job: Job
     };
 

@@ -6,7 +6,7 @@ module.exports = function(wagner) {
 
     let api = express.Router();
 
-    api.get('/', wagner.invoke(function (User) {
+    api.get('/', wagner.invoke(function () {
 
         return function (req, res) {
 
@@ -16,11 +16,11 @@ module.exports = function(wagner) {
 
     // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
     // Request headers:  name: Content-Type  value: application/json
-    api.get('/listarEmpresas', wagner.invoke(function (User) {
+    api.get('/listarEmpresas', wagner.invoke(function (CompanyUser) {
 
         return function (req, res) {
 
-            User.find({}, '_id companyName').exec(function (error, User) {
+            CompanyUser.find({}, '_id companyName').exec(function (error, user) {
                 if (error) {
                     return res
                         .status(status.INTERNAL_SERVER_ERROR)
@@ -28,7 +28,7 @@ module.exports = function(wagner) {
                 }
                 // todo: set a response for no results
 
-                res.json(User);
+                res.json(user);
             })
         };
     }));
@@ -36,13 +36,33 @@ module.exports = function(wagner) {
 
     // Registre al nuevo usuario: http://localhost:3000/organizacion/registrar
     // Request headers:  name: Content-Type  value: application/json
-    api.post('/registrar', wagner.invoke( function (User) {
+    api.post('/registrar', wagner.invoke( function (CompanyUser) {
 
         return function (req, res) {
 
             let reqUser = req.body;
-            req.assert('companyName', 'You must enter the company Username').notEmpty();
-            req.assert('password', 'Password must be at least 4 characters long').len(4);
+            req.assert('companyName', 'value is not in range')
+                .isLength({min: 3, max: 15})
+                .isAlphanumeric('es-ES');
+            req.assert('password', 'value is not in range')
+                .isLength({min: 3, max: 15})
+                .isAlphanumeric('es-ES');
+            req.assert('companyDetails', 'This field is required')
+                .notEmpty();
+            req.assert('website', 'This field is required')
+                .notEmpty();
+            req.assert('name', 'This field is required')
+                .notEmpty();
+            req.assert('lastName', 'This field is required')
+                .notEmpty();
+            req.assert('contact', 'This field is required')
+                .notEmpty();
+            req.assert('nit', 'This field is required')
+                .notEmpty();
+            req.assert('city', 'This field is required')
+                .notEmpty();
+            req.assert('employmentSector', 'This field is required')
+                .notEmpty();
 
             let errors = req.validationErrors();
 
@@ -53,7 +73,7 @@ module.exports = function(wagner) {
 
             process.nextTick(function () {
 
-                User.findOne({companyName: reqUser.companyName}, function (err, user) {
+                CompanyUser.findOne({companyName: reqUser.companyName}, function (err, user) {
 
                     if(err){
                         return res
@@ -68,7 +88,7 @@ module.exports = function(wagner) {
                             .json({error: 'The username already exist'});
                     }
 
-                    User.create(reqUser, function (error) {
+                    CompanyUser.create(reqUser, function (error) {
 
                         if(error){
                             return res
@@ -88,16 +108,20 @@ module.exports = function(wagner) {
 
     // autentique al usuario: http://localhost:3000/organizacion/login
     // Request headers:  name: Content-Type  value: application/json
-    api.post('/login', wagner.invoke(function (User) {
+    api.post('/login', wagner.invoke(function (CompanyUser) {
 
         return function (req,res) {
-            req.assert('companyName', 'You must enter the company Username').notEmpty();
-            req.assert('password', 'Password must be at least 4 characters long').len(4);
+
+            req.assert('companyName', 'value is not in range')
+                .isLength({min: 3, max: 15})
+                .isAlphanumeric('es-ES');
+            req.assert('password', 'value is not in range')
+                .isLength({min: 3, max: 15})
+                .isAlphanumeric('es-ES');
 
             let errors = req.validationErrors();
 
             if(errors) {
-                console.error('errors: ', errors);
                 return res.status(status.BAD_REQUEST).send(errors);
             }
 
@@ -105,7 +129,7 @@ module.exports = function(wagner) {
 
             process.nextTick(function () {
 
-                User.findOne({companyName: reqAccess.companyName}, function (err, user) {
+                CompanyUser.findOne({companyName: reqAccess.companyName}, function (err, user) {
 
                     if(err){
                         return res

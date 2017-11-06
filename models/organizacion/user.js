@@ -49,7 +49,7 @@ let userSchema = {
     },
     role: {
         type: String,
-        required: true
+        default: 'company'
     },
     hash: String,
     salt: String       // o contraseña
