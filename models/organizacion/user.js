@@ -3,11 +3,48 @@ let crypto = require('crypto');
 let jwt = require('jsonwebtoken');
 let config = require('../../config/index');
 
+// todo: remove the "role" field
 let userSchema = {
 
     companyName: {
         type: String,
         unique: true,
+        required: true
+    },
+    companyDetails: {
+        type: String,
+        required: true
+    },
+    website: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    contact: {
+        type: String,
+        required: true
+    },
+    workingRole: {
+        type: String,
+        required: false
+    },
+    nit: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    employmentSector: {
+        type: String,
         required: true
     },
     role: {
@@ -16,7 +53,6 @@ let userSchema = {
     },
     hash: String,
     salt: String       // o contraseña
-
 };
 
 let schema = new mongoose.Schema(userSchema);
