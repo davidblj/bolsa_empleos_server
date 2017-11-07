@@ -29,5 +29,5 @@ module.exports = {
                 .status(status.UNAUTHORIZED)
                 .json({error: 'You are not authorized for this type of request'})
         }
-    })
+    }),
 };

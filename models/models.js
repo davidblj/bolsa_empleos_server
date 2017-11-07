@@ -7,9 +7,8 @@ module.exports = function(wagner) {
     mongoose.Promise = global.Promise;
     mongoose.connect(config.database, {useMongoClient: true});
 
-    // todo: change "User" to "CompanyUser"
-     let CompanyUser = mongoose.model('User', require('./organizacion/user'), 'companyUsers');
-    let Job = mongoose.model('Job', require('./organizacion/job'), 'jobs');
+    let CompanyUser = mongoose.model('User', require('./company/user'), 'companyUsers');
+    let Job = mongoose.model('Job', require('./company/job'), 'jobs');
 
     let models = {
         CompanyUser: CompanyUser,

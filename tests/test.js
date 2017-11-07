@@ -315,5 +315,56 @@ describe('Organization API', function() {
     /*describe('#POST /nuevaOferta', function () {
 
     });*/
+
+    describe('#POST /perfil', function () {
+
+        let loginCredentials = {
+            companyName: 'pragma',
+            password: 'pragmaPassword'
+        };
+
+        before('insert a new company in to the db', function (done) {
+
+            let registrationURL = rootURL + 'registrar';
+
+            request
+                .post(registrationURL)
+                .set('Content-Type', 'application/json')
+                .send(companyUser)
+                .end(function (err) {
+                    expect(err).to.be.null;
+                    done();
+                });
+        });
+
+        // todo: finish this test
+        it('can load details', function (done) {
+            let profileURL = rootURL + 'retornarPerfil';
+            let loginURL = rootURL + 'login';
+
+            request
+                .post(loginURL)
+                .set('Content-Type', 'application/json')
+                .send(loginCredentials)
+                .end(function (err, res) {
+
+                    expect(err).to.be.null;
+                    let jwt = res.body.token;
+                    request
+                        .get(profileURL)
+                        .set('x-access-token', jwt)
+                        .end(function (err, res) {
+                            done();
+                        })
+                });
+        });
+
+        after('delete all the company users in the database', function (done) {
+            Company.remove({}, function (err) {
+                expect(err).to.be.null;
+                done()
+            });
+        });
+    });
 });
 

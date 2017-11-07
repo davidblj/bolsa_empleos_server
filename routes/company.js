@@ -220,6 +220,8 @@ module.exports = function(wagner) {
         }
     }));
 
+
+    // todo: add this as a general route for an employee to consume.
     // liste las ofertas por empresa:  http://localhost:3000/organizacion/listarOfertas
     // Request headers:  name: x-access-token  value: xxx.xxx.xxx
     api.get('/listarOfertas', auth.verifyToken, wagner.invoke(function (Job) {
@@ -252,6 +254,37 @@ module.exports = function(wagner) {
             });
         }
     }));
+
+    api.get('/retornarPerfil', auth.verifyToken, wagner.invoke(function (CompanyUser) {
+
+        return function (req, res) {
+
+            let role = req.decoded.role;
+            let companyName = req.decoded.name;
+
+            if (role !== 'company') {
+                let content = { message: 'You don\'t have permission for this type of request'};
+                return res
+                    .status(status.FORBIDDEN)
+                    .json(content);
+            }
+
+            CompanyUser.findOne({companyName: companyName}, '-salt -hash', function (err, user) {
+
+                if (err) {
+                    let content = { message: err.toString() };
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json(content);
+                }
+
+                return res.json(user);
+            });
+        };
+    }));
+
+    // todo: remove duplicate code from error responses
+    // todo: split this file and export the functions
 
     return api;
 };
