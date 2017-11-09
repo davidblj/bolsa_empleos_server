@@ -14,6 +14,7 @@ module.exports = function(wagner) {
         };
     }));
 
+    // todo: make this a top five, with a total of current offers
     // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
     // Request headers:  name: Content-Type  value: application/json
     api.get('/listarEmpresas', wagner.invoke(function (CompanyUser) {

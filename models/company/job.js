@@ -1,6 +1,7 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
+// todo: group jobs by companies
 let jobSchema = {
 
     // todo: make an indexation to the id of this schema

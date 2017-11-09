@@ -316,6 +316,7 @@ describe('Organization API', function() {
 
     });*/
 
+    // todo: finish this test suite
     describe('#POST /perfil', function () {
 
         let loginCredentials = {
@@ -337,7 +338,6 @@ describe('Organization API', function() {
                 });
         });
 
-        // todo: finish this test
         it('can load details', function (done) {
             let profileURL = rootURL + 'retornarPerfil';
             let loginURL = rootURL + 'login';
@@ -366,5 +366,6 @@ describe('Organization API', function() {
             });
         });
     });
+
 });
 
