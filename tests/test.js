@@ -2,7 +2,8 @@ let supertest = require('supertest'),
     wagner = require('wagner-core'),
     chai = require('chai'),
     app = require('../app/app'),
-    config = require('../config/index');
+    config = require('../config/index'),
+    listCompaniesTests = require('./company/listCompanies');
 
 let request = supertest(app);
 let expect = chai.expect;
@@ -29,73 +30,16 @@ describe('Organization API', function() {
         password: 'pragmaPassword',
     };
 
-    before(function () {
-        let models = require('../models/models')(wagner);
-        Company = models.CompanyUser;
-    });
+    before(listCompaniesTests.beforeAllTests);
 
     describe('#GET /listarEmpresas', function () {
 
-        let url = rootURL + 'listarEmpresas';
+        it('should return status 200', listCompaniesTests.status200);
+        it('should return a Content-Type application/json response', listCompaniesTests.jsonResponse);
+        it('should return a response message as an empty Array', listCompaniesTests.emptyArray);
+        it('should return the correct company details', listCompaniesTests.companyDetails);
 
-        it('should return status 200', function(done) {
-            request
-                .get(url)
-                .end(function (err, res) {
-                    expect(err).to.be.null;
-                    expect(res.statusCode).to.equal(200);
-                    done();
-            })
-        });
-
-        it('should return a Content-Type application/json response', function (done) {
-            request
-                .get(url)
-                .end(function (err, res) {
-                    expect(err).to.be.null;
-                    expect(res.statusCode).to.equal(200);
-                    expect(res).to.be.json;
-                    done();
-                })
-        });
-
-        it('should return a response message as an empty Array', function (done) {
-            request
-                .get(url)
-                .end(function (err, res) {
-                    expect(err).to.be.null;
-                    expect(res.statusCode).to.equal(200);
-                    expect(res).to.be.json;
-                    expect(res.body).to.be.an('Array');
-                    expect(res.body).to.be.an('Array').that.is.empty;
-                    done();
-                })
-        });
-
-        it('should return the correct company details', function (done) {
-
-            Company(companyUser).save(function (err) {
-               expect(err).to.be.null;
-
-                request
-                    .get(url)
-                    .end(function (err, res) {
-                        expect(err).to.be.null;
-                        expect(res.statusCode).to.equal(200);
-                        expect(res.body).to.be.an('Array');
-                        expect(res.body.length).to.be.equal(1);
-                        expect(res.body[0].companyName).to.be.equal('pragma');
-                        done();
-                    });
-            });
-        });
-
-        afterEach('delete company users in the database', function (done) {
-            Company.remove({}, function (err) {
-                expect(err).to.be.null;
-                done()
-            })
-        });
+        afterEach('delete company users in the database', listCompaniesTests.afterEachTest);
     });
 
     // todo: add tests for a minimun length in the user credentials and for fields with non alphanumeric characters
