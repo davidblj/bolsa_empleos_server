@@ -18,7 +18,7 @@ module.exports = function (wagner) {
                     .json({error: 'No company has been specified'});
             }
 
-            CompanyUser.find({companyName: companyName}, '-hash -role',function (err, company) {
+            CompanyUser.findOne({companyName: companyName}, '-hash -role',function (err, company) {
 
                 // todo: use a function;
                 if(err){
@@ -35,7 +35,7 @@ module.exports = function (wagner) {
 
                 // todo: embed the city location if need it
                 // todo: do a pagination
-                Job.find({ownerCompany: companyName}, 'jobName technicalRole', function (err, jobs) {
+                Job.find({ownerCompany: companyName}, 'jobName description expiryDate technicalRole', function (err, jobs) {
 
                     if(err){
                         return res
@@ -44,8 +44,8 @@ module.exports = function (wagner) {
                     }
 
                     let companyDetails = {
-                        companyDetails: company,
-                        jobOffers: jobs
+                        company: company,
+                        jobs: jobs
                     };
 
                     res.json(companyDetails);
@@ -54,7 +54,29 @@ module.exports = function (wagner) {
         }
     }));
 
-    // api.get()
+    api.get('/getAvailableOffers', wagner.invoke(function (Job) {
+
+        return function (req, res) {
+
+            Job.find({}, 'jobName ownerCompany salary', function (err, jobs) {
+
+                if(err) {
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json({error: err.toString()});
+                }
+
+                if(!jobs) {
+                    let content = { message: 'No hay ofertas registradas' };
+                    res
+                        .status(status.CREATED)
+                        .json(content);
+                }
+
+                res.json(jobs);
+            })
+        }
+    }));
 
     return api;
 };
