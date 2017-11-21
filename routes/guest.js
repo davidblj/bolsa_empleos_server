@@ -58,7 +58,7 @@ module.exports = function (wagner) {
 
         return function (req, res) {
 
-            Job.find({}, 'jobName ownerCompany salary', function (err, jobs) {
+            Job.find({}, '_id jobName ownerCompany salary', function (err, jobs) {
 
                 if(err) {
                     return res
@@ -68,14 +68,38 @@ module.exports = function (wagner) {
 
                 if(!jobs) {
                     let content = { message: 'No hay ofertas registradas' };
-                    res
-                        .status(status.CREATED)
-                        .json(content);
+                    res.json(content);
                 }
 
                 res.json(jobs);
             })
         }
+    }));
+
+    api.get('/getJobDetails', wagner.invoke(function (Job) {
+
+        return function (req, res) {
+
+            let jobId = req.query.jobId;
+
+            Job.findOne({ _id: jobId }, '-candidates' , function (err, job) {
+
+                if(err) {
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json({error: err.toString()});
+                }
+
+                if(!job) {
+                    if(!job) {
+                        let content = { message: 'La oferta seleccionada no existe' };
+                        res.json(content);
+                    }
+                }
+
+                res.json(job);
+            });
+        };
     }));
 
     return api;
