@@ -7,7 +7,8 @@
     "start": "nodemon ./server.js",
     "startServer": "NODE_ENV=development nodemon ./server.js",
     "startMongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/",
-    "test": "NODE_ENV=test mocha ./tests/routes.company.spec.js"
+    "test": "NODE_ENV=test mocha ./tests/routes.company.spec.js",
+    "remoteTest": "NODE_ENV=remote mocha ./tests/routes.company.spec.js"
   },
   "repository": {
     "type": "git",
