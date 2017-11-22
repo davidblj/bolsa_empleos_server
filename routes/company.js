@@ -21,7 +21,7 @@ module.exports = function(wagner) {
 
         return function (req, res) {
 
-            CompanyUser.find({}, '_id companyName').exec(function (error, user) {
+            CompanyUser.find({}, '_id companyName companyDetails').exec(function (error, user) {
                 if (error) {
                     return res
                         .status(status.INTERNAL_SERVER_ERROR)
@@ -74,6 +74,7 @@ module.exports = function(wagner) {
 
             process.nextTick(function () {
 
+                // todo: verify the email existence
                 CompanyUser.findOne({companyName: reqUser.companyName}, function (err, user) {
 
                     if(err){
@@ -84,6 +85,7 @@ module.exports = function(wagner) {
 
                     if(user){
 
+                        // todo: create a new service to verify the user or email existence
                         return res
                             .status(status.CONFLICT)
                             .json({error: 'The username already exist'});
@@ -107,17 +109,18 @@ module.exports = function(wagner) {
         }
     }));
 
-    // autentique al usuario: http://localhost:3000/organizacion/login
+    // todo: make this a public route. Use the same route to authenticate all kind of users
+    // autentique al usuario: http://localhost:3000/company/login
     // Request headers:  name: Content-Type  value: application/json
-    api.post('/login', wagner.invoke(function (CompanyUser) {
+    api.post('/login', wagner.invoke(function (CompanyUser, Applicant) {
 
         return function (req,res) {
 
-            req.assert('companyName', 'value is not in range')
-                .isLength({min: 3, max: 15})
+            req.assert('username', 'value is not in range')
+                .isLength({min: 2, max: 15})
                 .isAlphanumeric('es-ES');
             req.assert('password', 'value is not in range')
-                .isLength({min: 3, max: 15})
+                .isLength({min: 2, max: 15})
                 .isAlphanumeric('es-ES');
 
             let errors = req.validationErrors();
@@ -128,43 +131,72 @@ module.exports = function(wagner) {
 
             let reqAccess = req.body;
 
-            process.nextTick(function () {
-
-                CompanyUser.findOne({companyName: reqAccess.companyName}, function (err, user) {
+                CompanyUser.findOne({companyName: reqAccess.username}, function (err, companyUser) {
 
                     if(err){
                         return res
                             .status(status.INTERNAL_SERVER_ERROR)
-                            .json({error: error.toString()});
+                            .json({error: err.toString()});
                     }
 
-                    if(!user){
-                        let content = { message: 'Incorrect username or password' };
-                        return res
-                            .status(status.UNAUTHORIZED)
-                            .json(content);
-                    }
+                    if(companyUser){
 
-                    if(user){
-
-                        if(!user.validPassword(reqAccess.password)){
-                            let content = { message: 'Incorrect username or password' };
+                        if(!companyUser.validPassword(reqAccess.password)){
+                            let content = { message: 'Incorrect Username or password' };
                             return res
                                 .status(status.UNAUTHORIZED)
                                 .json(content);
                         }
 
-                        let token = user.generateJwt();
+                        let token = companyUser.generateJwt();
                         let content = {
-                            user: user.companyName,
-                            role: user.role,
+                            user: companyUser.companyName,
+                            role: companyUser.role,
                             token: token
                         };
 
-                        res.json(content);
+                        return res.json(content);
+                    }
+
+                    if(!companyUser){
+
+                        Applicant.findOne({username: reqAccess.username}, function (err, applicantUser) {
+
+                            if(err){
+                                return res
+                                    .status(status.INTERNAL_SERVER_ERROR)
+                                    .json({error: err.toString()});
+                            }
+
+                            if(!applicantUser) {
+
+                                let content = { message: 'Incorrect Username or password' };
+                                return res
+                                    .status(status.UNAUTHORIZED)
+                                    .json(content);
+                            }
+
+                            if(applicantUser){
+
+                                if(!applicantUser.validPassword(reqAccess.password)){
+                                    let content = { message: 'Incorrect Username or password' };
+                                    return res
+                                        .status(status.UNAUTHORIZED)
+                                        .json(content);
+                                }
+
+                                let token = applicantUser.generateJwt();
+                                let content = {
+                                    user: applicantUser.companyName,
+                                    role: applicantUser.role,
+                                    token: token
+                                };
+
+                                res.json(content);
+                            }
+                        })
                     }
                 });
-            });
         }
     }));
 
@@ -284,8 +316,9 @@ module.exports = function(wagner) {
         };
     }));
 
+
     // todo: remove duplicate code from error responses
-    // todo: split this file and export the functions
+    // todo: split this file and export the functions from a controller class
 
     return api;
 };

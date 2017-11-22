@@ -8,37 +8,18 @@ let supertest = require('supertest'),
 let request = supertest(app);
 let expect = chai.expect;
 
-// URL
-
-let rootURL = '/organizacion/';
-let url = rootURL + 'listarEmpresas';
-
-// Local variables
-
 let Company;
-let companyUser = {
-    companyName: 'pragma',
-    companyDetails: 'We focus our efforts in developing cutting edge software solutions',
-    website: 'www.pragma.com',
-    name: 'David',
-    lastName: 'Jaramillo',
-    contact: '3003102703',
-    workingRole: 'Manager',
-    nit: 'N2405',
-    city: 'Medellin, Antioquia, Colombia',
-    employmentSector: 'Software development',
-    password: 'pragmaPassword',
-};
+let company = require('../mocks/company');
 
 exports.beforeAllTests = function () {
-    console.log('i exist !');
     let models = require('../../models/models')(wagner);
     Company = models.CompanyUser;
 };
 
 exports.status200 = function(done) {
+
     request
-        .get(url)
+        .get(company.listCompanies)
         .end(function (err, res) {
             expect(err).to.be.null;
             expect(res.statusCode).to.equal(200);
@@ -47,8 +28,9 @@ exports.status200 = function(done) {
 };
 
 exports.jsonResponse = function (done) {
+
     request
-        .get(url)
+        .get(company.listCompanies)
         .end(function (err, res) {
             expect(err).to.be.null;
             expect(res.statusCode).to.equal(200);
@@ -58,8 +40,9 @@ exports.jsonResponse = function (done) {
 };
 
 exports.emptyArray = function (done) {
+
     request
-        .get(url)
+        .get(company.listCompanies)
         .end(function (err, res) {
             expect(err).to.be.null;
             expect(res.statusCode).to.equal(200);
@@ -71,17 +54,20 @@ exports.emptyArray = function (done) {
 };
 
 exports.companyDetails = function (done) {
+
+    let companyUser = company.companyUser;
+
     Company(companyUser).save(function (err) {
         expect(err).to.be.null;
 
         request
-            .get(url)
+            .get(company.listCompanies)
             .end(function (err, res) {
                 expect(err).to.be.null;
                 expect(res.statusCode).to.equal(200);
                 expect(res.body).to.be.an('Array');
                 expect(res.body.length).to.be.equal(1);
-                expect(res.body[0].companyName).to.be.equal('pragma');
+                expect(res.body[0].companyName).to.be.equal(companyUser.companyName);
                 done();
             });
     });
