@@ -52,7 +52,6 @@ exports.status403 = function (done) {
 
             expect(err).to.be.null;
             let jwt = res.body.token;
-            console.log(jwt);
             request
                 .get(company.getProfile)
                 .set('x-access-token', jwt)

@@ -48,7 +48,6 @@ exports.status401 = function (done) {
         .set('Content-Type', 'application/json')
         .send(unknownLoginCredentials)
         .end(function (err, res) {
-            console.log(res.statusCode);
             expect(res.statusCode).to.equal(401);
             done();
         });

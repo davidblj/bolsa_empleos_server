@@ -64,7 +64,6 @@ exports.jsonResponse = function (done) {
         .end(function (err, res) {
             expect(res.statusCode).to.equal(201);
             expect(res).to.be.json;
-            console.log(res.body);
             done();
         });
 };
