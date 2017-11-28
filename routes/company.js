@@ -15,7 +15,7 @@ module.exports = function(wagner) {
     }));
 
     // todo: make this a top five, with a total of current offers
-    // liste todas las empresas registradas: http://localhost:3000/organizacion/listar
+    // liste todas las empresas registradas: http://localhost:3000/company/listar
     // Request headers:  name: Content-Type  value: application/json
     api.get('/listarEmpresas', wagner.invoke(function (CompanyUser) {
 
@@ -34,8 +34,7 @@ module.exports = function(wagner) {
         };
     }));
 
-
-    // Registre al nuevo usuario: http://localhost:3000/organizacion/registrar
+    // Registre al nuevo usuario: http://localhost:3000/company/registrar
     // Request headers:  name: Content-Type  value: application/json
     api.post('/registrar', wagner.invoke( function (CompanyUser) {
 
@@ -200,7 +199,7 @@ module.exports = function(wagner) {
         }
     }));
 
-    // Registre la oferta: http://localhost:3000/organizacion/nuevo
+    // Registre la oferta: http://localhost:3000/company/nuevo
     // Request headers:  name: Content-Type  value: application/json
     api.post('/nuevaOferta', auth.verifyToken, wagner.invoke(function (Job) {
 
@@ -253,9 +252,8 @@ module.exports = function(wagner) {
         }
     }));
 
-
     // todo: add this as a general route for an employee to consume.
-    // liste las ofertas por empresa:  http://localhost:3000/organizacion/listarOfertas
+    // liste las ofertas por empresa:  http://localhost:3000/company/listarOfertas
     // Request headers:  name: x-access-token  value: xxx.xxx.xxx
     api.get('/listarOfertas', auth.verifyToken, wagner.invoke(function (Job) {
 
@@ -272,7 +270,6 @@ module.exports = function(wagner) {
             }
 
             // todo: return the quantity
-
             Job.find({ownerCompany: companyName}, '_id jobName expiryDate', function (err, job) {
 
                 if (err) {
@@ -316,6 +313,33 @@ module.exports = function(wagner) {
         };
     }));
 
+    api.get('/getJobDetails', auth.verifyToken, wagner.invoke(function (Job) {
+
+        return function (req, res) {
+
+            let role = req.decoded.role;
+            let jobId = req.body.content.jobId;
+
+            if (role !== 'company') {
+                let content = { message: 'You don\'t have permission for this type of request'};
+                return res
+                    .status(status.FORBIDDEN)
+                    .json(content);
+            }
+
+            Job.findOne({_id: jobId}, 'jobName', function (err, job) {
+
+                if (err) {
+                    let content = { message: err.toString() };
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json(content);
+                }
+
+                return res.json(job);
+            })
+        }
+    }));
 
     // todo: remove duplicate code from error responses
     // todo: split this file and export the functions from a controller class

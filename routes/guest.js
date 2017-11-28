@@ -68,7 +68,7 @@ module.exports = function (wagner) {
 
                 if(!jobs) {
                     let content = { message: 'No hay ofertas registradas' };
-                    res.json(content);
+                    return res.json(content);
                 }
 
                 res.json(jobs);
@@ -91,10 +91,8 @@ module.exports = function (wagner) {
                 }
 
                 if(!job) {
-                    if(!job) {
-                        let content = { message: 'La oferta seleccionada no existe' };
-                        res.json(content);
-                    }
+                    let content = { message: 'La oferta seleccionada no existe' };
+                    return res.json(content);
                 }
 
                 res.json(job);

@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
 let crypto = require('crypto');
 let jwt = require('jsonwebtoken');
 let config = require('../../config/index');
+let Schema = mongoose.Schema;
 
 let userSchema = {
 
@@ -45,6 +46,10 @@ let userSchema = {
         type: String,
         default: 'student'
     },
+    jobs: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Job'
+    }],
     hash: String,
     salt: String
 };

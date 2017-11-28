@@ -69,5 +69,51 @@ module.exports = function (wagner) {
         }
     }));
 
+    // todo: put is more adequate
+    api.post('/apply', auth.verifyToken, wagner.invoke(function (Job, Applicant) {
+
+        return function (req, res) {
+
+            let applicantId = req.decoded._id;
+            let jobId = req.body.content.jobId;
+
+            // todo: check if the user is not already subscribed
+            // todo: create a new api route
+            Job.findOneAndUpdate(
+                {_id: jobId},
+                {$push: {candidates: applicantId}},
+                {returnNewDocument: true },
+                function (err, job) {
+
+                    if (err) {
+                        let content = {message: err.toString()};
+                        return res
+                            .status(status.INTERNAL_SERVER_ERROR)
+                            .json(content);
+                    }
+
+                    // todo: debug this variable
+                    console.log(job);
+
+                    Applicant.findOneAndUpdate(
+                        {_id:applicantId},
+                        {$push: {jobs: jobId}},
+                        {returnNewDocument: true},
+                        function (err, applicant) {
+
+                            if (err) {
+                                let content = {message: err.toString()};
+                                return res
+                                    .status(status.INTERNAL_SERVER_ERROR)
+                                    .json(content);
+                            }
+
+                            console.log(applicant);
+                            return res.json({})
+                        }
+                    )
+                })
+        }
+    }));
     return api;
 };
