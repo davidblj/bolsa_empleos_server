@@ -318,7 +318,7 @@ module.exports = function(wagner) {
         return function (req, res) {
 
             let role = req.decoded.role;
-            let jobId = req.body.content.jobId;
+            let jobId = req.query.jobId;
 
             if (role !== 'company') {
                 let content = { message: 'You don\'t have permission for this type of request'};
@@ -327,7 +327,7 @@ module.exports = function(wagner) {
                     .json(content);
             }
 
-            Job.findOne({_id: jobId}, 'jobName', function (err, job) {
+            Job.findOne({_id: jobId}, function (err, job) {
 
                 if (err) {
                     let content = { message: err.toString() };

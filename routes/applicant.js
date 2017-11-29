@@ -69,6 +69,26 @@ module.exports = function (wagner) {
         }
     }));
 
+    api.get('/getAppliedJobs', auth.verifyToken, wagner.invoke(function (Applicant) {
+
+        return function (req, res) {
+
+            let applicantId = req.decoded._id;
+
+            Applicant.findOne({_id: applicantId}, 'jobs',function (err,Applicant) {
+
+                if (err) {
+                    let content = {message: err.toString()};
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json(content);
+                }
+
+                return res.json(Applicant);
+            });
+        };
+    }));
+
     // todo: put is more adequate
     api.post('/apply', auth.verifyToken, wagner.invoke(function (Job, Applicant) {
 
@@ -92,7 +112,7 @@ module.exports = function (wagner) {
                             .json(content);
                     }
 
-                    // todo: debug this variable
+                    // todo: debug this variable, null response
                     console.log(job);
 
                     Applicant.findOneAndUpdate(
