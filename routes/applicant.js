@@ -75,7 +75,7 @@ module.exports = function (wagner) {
 
             let applicantId = req.decoded._id;
 
-            Applicant.findOne({_id: applicantId}, 'jobs',function (err,Applicant) {
+            Applicant.findOne({_id: applicantId}, 'jobs',function (err, Applicant) {
 
                 if (err) {
                     let content = {message: err.toString()};

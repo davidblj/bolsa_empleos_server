@@ -327,17 +327,19 @@ module.exports = function(wagner) {
                     .json(content);
             }
 
-            Job.findOne({_id: jobId}, function (err, job) {
+            Job.findOne({_id: jobId})
+                .populate('candidates', 'applicantName email cellphone')
+                .exec(function (err, job) {
+                    if (err) {
+                        let content = { message: err.toString() };
+                        return res
+                            .status(status.INTERNAL_SERVER_ERROR)
+                            .json(content);
+                    }
 
-                if (err) {
-                    let content = { message: err.toString() };
-                    return res
-                        .status(status.INTERNAL_SERVER_ERROR)
-                        .json(content);
-                }
-
-                return res.json(job);
-            })
+                    console.log(job);
+                    return res.json(job);
+                });
         }
     }));
 

@@ -49,7 +49,7 @@ let jobSchema = {
     // todo: create a quantity variable
     candidates: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Applicant'
     }]
 };
 
