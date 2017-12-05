@@ -38,6 +38,7 @@ describe('Organization API', function() {
 
 
     // todo: add test for a minimun length in the login credentials
+    // todo: add test for an applicant user
     describe('#POST /login', function () {
 
         before('initialize models', loginTest.beforeAllTests);

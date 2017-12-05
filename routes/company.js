@@ -186,7 +186,7 @@ module.exports = function(wagner) {
 
                                 let token = applicantUser.generateJwt();
                                 let content = {
-                                    user: applicantUser.companyName,
+                                    user: applicantUser.username,
                                     role: applicantUser.role,
                                     token: token
                                 };

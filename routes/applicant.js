@@ -135,5 +135,6 @@ module.exports = function (wagner) {
                 })
         }
     }));
+
     return api;
 };
