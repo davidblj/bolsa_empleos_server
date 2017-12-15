@@ -98,7 +98,6 @@ module.exports = function (wagner) {
             let jobId = req.body.content.jobId;
 
             // todo: check if the user is not already subscribed
-            // todo: create a new api route
             Job.findOneAndUpdate(
                 {_id: jobId},
                 {$push: {candidates: applicantId}},
@@ -113,7 +112,7 @@ module.exports = function (wagner) {
                     }
 
                     // todo: debug this variable, null response
-                    console.log(job);
+                    // console.log(job);
 
                     Applicant.findOneAndUpdate(
                         {_id:applicantId},

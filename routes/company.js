@@ -337,7 +337,6 @@ module.exports = function(wagner) {
                             .json(content);
                     }
 
-                    console.log(job);
                     return res.json(job);
                 });
         }

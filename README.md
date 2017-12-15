@@ -26,11 +26,11 @@ Para inicializar la base de datos:
 
 Para iniciar el servidor:
 
-> npm run startServer
-
-Para ejecutar el cliente:
-
-> npm run startProxy
-
 # Integración continua en codeship
+
+todo
+
 # deploy en heroku
+
+
+todo

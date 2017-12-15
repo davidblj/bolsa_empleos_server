@@ -66,11 +66,6 @@ module.exports = function (wagner) {
                         .json({error: err.toString()});
                 }
 
-                if(!jobs) {
-                    let content = { message: 'No hay ofertas registradas' };
-                    return res.json(content);
-                }
-
                 res.json(jobs);
             })
         }
@@ -98,6 +93,34 @@ module.exports = function (wagner) {
                 res.json(job);
             });
         };
+    }));
+
+    api.get('/fetchJobs', wagner.invoke(function (Job) {
+
+        return function (req, res) {
+
+            // todo: validations
+            // todo: trim results by salary, and job name
+
+            let query = {};
+            for(let key in req.query) {
+
+                if(req.query.hasOwnProperty(key)) {
+                    query[key] = req.query[key];
+                }
+            }
+
+            Job.find({ $or: [query] }, function (err, jobs) {
+
+                if(err) {
+                    return res
+                        .status(status.INTERNAL_SERVER_ERROR)
+                        .json({error: err.toString()});
+                }
+
+                res.json(jobs);
+            });
+        }
     }));
 
     return api;
