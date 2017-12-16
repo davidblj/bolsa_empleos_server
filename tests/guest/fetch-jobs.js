@@ -77,6 +77,41 @@ exports.noResults = function (done) {
         });
 };
 
+exports.searchByText = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.queryByText)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.be.equal(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.an('Array');
+            expect(res.body).to.be.an('Array').to.have.lengthOf(1);
+
+            expect(res.body[0].jobName).to.be.equal('Web UI Developer');
+            done()
+        });
+};
+
+exports.searchBySalary = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.queryBySalary)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.be.equal(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.an('Array');
+            expect(res.body).to.be.an('Array').to.have.lengthOf(2);
+
+            expect(res.body[0].jobName).to.be.equal('Web UI Developer');
+            expect(res.body[1].jobName).to.be.equal('Software Engineer');
+            done()
+        });
+};
+
 exports.twoSets = function (done) {
 
     request
@@ -89,13 +124,13 @@ exports.twoSets = function (done) {
             expect(res.body).to.be.an('Array');
             expect(res.body).to.be.an('Array').to.have.lengthOf(2);
 
-            expect(res.body[1].jobName).to.be.equal('Software developer 2');
-            expect(res.body[1].languages).to.be.equal('Portuguese');
+            expect(res.body[0].jobName).to.be.equal('Software Developer');
+            expect(res.body[1].jobName).to.be.equal('Web UI Developer');
             done()
         });
 };
 
-exports.treeSets = function (done) {
+exports.threeSets = function (done) {
 
     request
         .get(job.fetchJobsURL)
@@ -107,8 +142,24 @@ exports.treeSets = function (done) {
             expect(res.body).to.be.an('Array');
             expect(res.body).to.be.an('Array').to.have.lengthOf(1);
 
-            expect(res.body[0].jobName).to.be.equal('Software developer 1');
-            expect(res.body[0].languages).to.be.equal('English');
+            expect(res.body[0].jobName).to.be.equal('Software Developer');
+            done()
+        });
+};
+
+exports.searchByAllOptions = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.queryByAllOptions)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.be.equal(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.an('Array');
+            expect(res.body).to.be.an('Array').to.have.lengthOf(1);
+
+            expect(res.body[0].jobName).to.be.equal('Web UI Developer');
             done()
         });
 };

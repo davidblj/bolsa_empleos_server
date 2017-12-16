@@ -95,31 +95,74 @@ module.exports = function (wagner) {
         };
     }));
 
+    // indexed fields: jobName, ownerCompany
     api.get('/fetchJobs', wagner.invoke(function (Job) {
 
         return function (req, res) {
 
             // todo: validations
-            // todo: trim results by salary, and job name
+            // todo: trim results by date
 
             let query = {};
+            let searchQuery = req.query.find;
+            let salaryQuery;
+
+            if (req.query.salary) {
+
+                salaryQuery = +req.query.salary;
+            }
+
+            // options population
             for(let key in req.query) {
 
-                if(req.query.hasOwnProperty(key)) {
+                if(req.query.hasOwnProperty(key)
+                    && key !== 'find' && key !== 'salary') {
+
                     query[key] = req.query[key];
                 }
             }
 
-            Job.find({ $or: [query] }, function (err, jobs) {
+            let pipe = [];
 
-                if(err) {
-                    return res
-                        .status(status.INTERNAL_SERVER_ERROR)
-                        .json({error: err.toString()});
+            // mongodb aggregate pipeline setup (order is vital)
+            if(searchQuery) {
+
+                pipe.push({
+                    $match: {
+                        $text: {$search: searchQuery}
+                    }
+                });
+            }
+
+            if(salaryQuery) {
+
+                pipe.push({
+                    $match: {
+                        salary: {$gte: salaryQuery}
+                    }
+                });
+            }
+
+            pipe.push({
+                $match: {
+                    $or: [query]
                 }
-
-                res.json(jobs);
             });
+
+            Job.aggregate(
+                pipe,
+                function (err, jobs) {
+
+                    if (err) {
+                        console.log(err.toString());
+                        return res
+                            .status(status.INTERNAL_SERVER_ERROR)
+                            .json({error: err.toString()});
+                    }
+
+                    console.log(jobs);
+                    res.json(jobs);
+                });
         }
     }));
 
