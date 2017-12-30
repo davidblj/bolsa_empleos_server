@@ -1,5 +1,6 @@
 let express = require('express');
 let status = require('http-status');
+let mongoose = require('mongoose');
 
 module.exports = function (wagner) {
 
@@ -102,27 +103,77 @@ module.exports = function (wagner) {
 
             // todo: validations
             // todo: trim results by date
+            // todo: organize by highest pay, most relevant. Possibly most viewed
+            // todo: reduce query length
 
-            let query = {};
+            // filtering
             let searchQuery = req.query.find;
-            let salaryQuery;
+            let salaryQuery = req.query.salary;
 
-            if (req.query.salary) {
+            // pagination
+            let pageSize = 3;
+            let pipe = [];
+
+            let currentId = req.query.currentId;
+            let pageJump = req.query.pageJump;
+            let dayOffset = req.query.dayPosted;
+            let highestPay = req.query.highestPay;
+            let relevance = req.query.relevance;
+
+            if (salaryQuery) {
 
                 salaryQuery = +req.query.salary;
             }
 
             // options population
+            let optionsByField = [];
             for(let key in req.query) {
 
+                // todo: refactor
                 if(req.query.hasOwnProperty(key)
-                    && key !== 'find' && key !== 'salary') {
+                    && key !== 'find' && key !== 'salary' && key !== 'dayPosted'
+                        && key !== 'currentId' && key !== 'pageJump') {
 
-                    query[key] = req.query[key];
+                    let tempOptions =  req.query[key].split(',');
+                    for(let i = 0; i < tempOptions.length; i++) {
+
+                        let value = {};
+                        value[key] = tempOptions[i];
+                        tempOptions[i] = value;
+                    }
+
+                    optionsByField.push(tempOptions);
                 }
             }
 
-            let pipe = [];
+            let query = [];
+            function buildQueryByFields(index, tempQuery) {
+
+                let field = optionsByField[index];
+
+                for(let i = 0; i < field.length; i ++) {
+
+                    let optionInField = field[i];
+
+                    // this is a one time execution loop
+                    for(let key in optionInField) {
+                        if(optionInField.hasOwnProperty(key)) {
+
+                            tempQuery[key] = optionInField[key];
+
+                            if(index === (optionsByField.length - 1)) {
+
+                                let copy = Object.assign({}, tempQuery);
+                                query.push(copy);
+                                delete tempQuery[key];
+
+                            } else {
+                                buildQueryByFields(index + 1, tempQuery);
+                            }
+                        }
+                    }
+                }
+            }
 
             // mongodb aggregate pipeline setup (order is vital)
             if(searchQuery) {
@@ -143,11 +194,142 @@ module.exports = function (wagner) {
                 });
             }
 
-            pipe.push({
-                $match: {
-                    $or: [query]
+            if(optionsByField.length) {
+
+                buildQueryByFields(0, {});
+                pipe.push({
+                    $match: {
+                        $or: query
+                    }
+                });
+            }
+
+            // last day, last week, last 2 weeks, last month, any time
+            if(dayOffset) {
+
+                let dateInUTC = new Date();
+                let millisecondsOffset = dayOffset * 24 * 60 * 60 * 1000;
+
+                let dayLimitInMillis = (dateInUTC.getTime() - millisecondsOffset) + dateInUTC.getTimezoneOffset();
+                let date = new Date(dayLimitInMillis);
+
+                pipe.push(
+                    {
+                        $match: {
+                            timePosted: {$gt: date}
+                        }
+                    }
+                );
+
+                if(pageJump > 0 || !currentId) {
+
+                    pipe.push({
+                        $sort: { _id: -1}
+                    });
                 }
-            });
+
+                // todo: refactor
+                if(currentId && pageJump) {
+
+                    if(pageJump > 0) {
+
+                        pipe.push(
+                            {
+                                $sort: {_id: -1}
+                            },
+                            {
+                                $match: {
+                                    _id: {$gt: currentId}
+                                }
+                            },
+                            {
+                                $skip: pageJump * pageSize
+                            });
+
+                    } else {
+
+                        pipe.push(
+                            {
+                                $match: {
+                                    _id: {$gt: currentId}
+                                }
+                            },
+                            {
+                                $skip: (-pageJump - 1) * pageSize
+                            },
+                            {
+                                $limit: pageSize
+                            },
+                            {
+                                $sort: {_id: -1}
+                            })
+                    }
+                }
+            }
+
+            /*if(highestPay) {
+                // todo: highest payed pagination
+            }
+
+            if(relevance) {
+                // todo: most applied pagination
+            }*/
+
+            if(!relevance && !highestPay && !dayOffset) {
+
+                // do not sort the insertion order when the page jump is negative
+                if(pageJump > 0 || !currentId) {
+
+                    pipe.push({
+                        $sort: { _id: -1}
+                    });
+                }
+
+                if (currentId && pageJump) {
+
+                    currentId = new mongoose.Types.ObjectId(currentId.toString());
+                    if (pageJump > 0) {
+
+                        pipe.push(
+                            {
+                                $match: {
+                                    _id: {$lte: currentId}
+                                }
+                            },
+                            {
+                                $skip: pageJump * pageSize
+                            });
+
+                    } else {
+
+                        pipe.push(
+                            {
+                                $match: {
+                                    _id: {$gt: currentId}
+                                }
+                            },
+                            {
+                                $skip: (-pageJump - 1) * pageSize
+                            },
+                            {
+                                $limit: pageSize
+                            },
+                            {
+                                $sort: {_id: -1}
+                            });
+                    }
+                }
+            }
+
+            // the page limit is automatically applied if a forward pagination has been made
+            if (pageJump > 0 || !currentId) {
+
+                pipe.push({
+                    $limit: pageSize
+                });
+            }
+
+            // todo: project values: _id, jobName, salary and ownerCompany
 
             Job.aggregate(
                 pipe,
@@ -160,9 +342,9 @@ module.exports = function (wagner) {
                             .json({error: err.toString()});
                     }
 
-                    console.log(jobs);
                     res.json(jobs);
                 });
+            // console.log(jobs);
         }
     }));
 
