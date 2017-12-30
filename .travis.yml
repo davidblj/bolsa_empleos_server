@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "7"
-script: true
-# branches:
-#  only:
-#  - develop
-#  - filtro
+  - "9"
+  - "8"
+script:               # not sure
+  - npm run remoteTest
+cache:
+  directories:
+    - "node_modules"
+
