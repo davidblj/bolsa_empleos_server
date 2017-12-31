@@ -4,9 +4,8 @@
 
 # IntelliJ project files
 .idea
-*.iml
 node_modules
-package-lock.json
 out
 gen
 .scannerwork
+.env

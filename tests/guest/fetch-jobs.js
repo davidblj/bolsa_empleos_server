@@ -15,9 +15,9 @@ exports.beforeAllTests = function () {
     Job = models.Job;
 };
 
-exports.insertJobs = function (done) {
+exports.insertJobsToFilter = function (done) {
 
-    Job.insertMany(job.jobs, function (err) {
+    Job.insertMany(job.jobs_filter, function (err) {
         expect(err).to.be.null;
         done();
     });
@@ -58,6 +58,7 @@ exports.noQuery = function (done) {
             expect(res).to.be.json;
             expect(res.body).to.be.an('Array');
             expect(res.body).to.be.an('Array').to.have.lengthOf(3);
+            // console.log(res.body);
             done()
         });
 };
@@ -90,6 +91,23 @@ exports.searchByText = function (done) {
             expect(res.body).to.be.an('Array').to.have.lengthOf(1);
 
             expect(res.body[0].jobName).to.be.equal('Web UI Developer');
+            done()
+        });
+};
+
+exports.searchByMultipleValues = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.queryByMultipleValues)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.be.equal(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.an('Array');
+            expect(res.body).to.be.an('Array').to.have.lengthOf(2);
+            expect(res.body[0].jobName).to.be.equal('Web UI Developer');
+            expect(res.body[1].jobName).to.be.equal('Software Engineer');
             done()
         });
 };
@@ -162,6 +180,86 @@ exports.searchByAllOptions = function (done) {
             expect(res.body[0].jobName).to.be.equal('Web UI Developer');
             done()
         });
+};
+
+exports.insertJobsToPaginate = function (done) {
+
+    Job.insertMany(job.jobs_pagination, function (err) {
+        expect(err).to.be.null;
+        done();
+    });
+};
+
+exports.forwardPagination = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+
+            let currentId = res.body[0]._id;
+            let query = { currentId: currentId, pageJump: 1};
+            request
+                .get(job.fetchJobsURL)
+                .query(query)
+                .end(function (err, res) {
+                    expect(err).to.be.null;
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res).to.be.json;
+                    expect(res.body).to.be.an('Array');
+                    expect(res.body).to.be.an('Array').to.have.lengthOf(3);
+
+                    expect(res.body[0].jobName).to.be.equal('Marketing analyst');
+                    done();
+                });
+        });
+};
+
+exports.backwardPagination = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+
+            let currentId = res.body[0]._id;
+            let query = { currentId: currentId, pageJump: 2};
+            request
+                .get(job.fetchJobsURL)
+                .query(query)
+                .end(function (err, res) {
+                    expect(err).to.be.null;
+
+                    let currentId = res.body[0]._id;
+                    query = { currentId: currentId, pageJump: -1};
+                    request
+                        .get(job.fetchJobsURL)
+                        .query(query)
+                        .end(function (err, res) {
+                            expect(err).to.be.null;
+                            expect(res.statusCode).to.be.equal(200);
+                            expect(res).to.be.json;
+                            expect(res.body).to.be.an('Array');
+                            expect(res.body).to.be.an('Array').to.have.lengthOf(3);
+
+                            expect(res.body[0].jobName).to.be.equal('Marketing analyst');
+                            done();
+                        });
+                });
+        });
+};
+
+exports.forwardPaginationByTime = function () {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.paginateByDate)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+
+            console.log(res.body)
+            // todo: paginate
+        })
 };
 
 exports.afterAllTest = function (done) {

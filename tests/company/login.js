@@ -1,7 +1,7 @@
 let supertest = require('supertest'),
     app = require('../../app/app'),
     wagner = require('wagner-core'),
-    config = require('../../config/index'),
+    config = require('../../config/environment'),
     chai = require('chai');
 
 let request = supertest(app);

@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 let _ = require('underscore');
-let config = require('../config/index');
+let config = require('../config/environment');
 
 module.exports = function(wagner) {
 

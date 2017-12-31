@@ -1,10 +1,9 @@
 language: node_js
 node_js:
-  - "9"
-  - "8"
-script:               # not sure
-  - npm run remoteTest
+- '8'
+script:
+- npm run remoteTesting
 cache:
   directories:
-    - "node_modules"
+  - node_modules
 

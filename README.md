@@ -14,23 +14,17 @@ Para *[Windows y linux](https://nodejs.org/en/download/)*
 # Ejecución del proyecto
 
 
-Aquí el orden es importante.
+Si lo estamos ejecutando por primera vez:
 
-Si lo estamos ejecutando por primera vez, o al menos una nueva librería se ha añadido :
+> yarn install  
 
-> npm install  
+Modificamos el script "startMongo" en el archivo "package.json" para que apunte a una carpeta del sistema (\<path>)
 
-Para inicializar la base de datos:
+> "startMongo": "mongod --dbpath \<path>"
 
-> mongod --dbpath <path>
+Luego se inicializa la base de datos y el servidor:
 
-Para iniciar el servidor:
+> npm run startMongo
 
-# Integración continua en codeship
+> npm run startServer
 
-todo
-
-# deploy en heroku
-
-
-todo

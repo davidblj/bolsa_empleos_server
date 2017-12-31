@@ -1,10 +1,10 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-// todo: group jobs by companies
+// todo: create a quantity variable on the number of candidates
+// todo: set the expiryDate to a date type
 let jobSchema = {
 
-    // todo: make an indexation to the id of this schema
     jobName: {
         type: String,
         required: true,
@@ -23,9 +23,8 @@ let jobSchema = {
     },
     languages: {
         type: String,
-        required: true
+         required: true
     },
-    // todo: set this variable to a date type
     expiryDate: {
         type: String,
         required: true
@@ -46,7 +45,10 @@ let jobSchema = {
         type: Boolean,
         required: true
     },
-    // todo: create a quantity variable
+    timePosted: {
+        type: Date,
+        default: new Date()
+    },
     candidates: [{
         type: Schema.Types.ObjectId,
         ref: 'Applicant'

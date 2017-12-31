@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 let crypto = require('crypto');
 let jwt = require('jsonwebtoken');
-let config = require('../../config/index');
+let config = require('../../config/environment');
 
 // todo: remove the "role" field
 let userSchema = {

@@ -6,14 +6,6 @@ module.exports = function(wagner) {
 
     let api = express.Router();
 
-    api.get('/', wagner.invoke(function () {
-
-        return function (req, res) {
-
-           return res.status(200).json({'Hola ': 'Heroku'});
-        };
-    }));
-
     // todo: make this a top five, with a total of current offers
     // liste todas las empresas registradas: http://localhost:3000/company/listar
     // Request headers:  name: Content-Type  value: application/json

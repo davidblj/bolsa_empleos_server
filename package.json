@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node ./server.js",
+    "start": "node ./server.js",
     "startServer": "NODE_ENV=development nodemon ./server.js",
     "startMongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/",
-    "test": "NODE_ENV=test mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js",
-    "remoteTest": "NODE_ENV=remote mocha ./tests/routes.company.spec.js"
+    "localTesting": "NODE_ENV=local-testing mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js",
+    "remoteTesting": "NODE_ENV=remote-testing mocha ./tests/routes.company.spec.js"
   },
   "repository": {
     "type": "git",
