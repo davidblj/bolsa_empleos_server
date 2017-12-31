@@ -6,4 +6,10 @@ script:
 cache:
   directories:
   - node_modules
-
+deploy:
+  provider: heroku
+  api_key:
+     secure: mZGFdAdLsM6Fa95UFO/zn+ABN7JKa4GAtk6kXDdj4vRvQXC4ukoYBQChjE5ETcItvCc9xFtX8qZF3/TqNIXsJbEpg3ljL6vY9Atgcqx8N//rWXOXHGqEhsE1LdRLXxC5VwvBIPDCbA4hI+F01gv8OCZbOjsNBpRFiwy2nJc2afAl7vk2mvaVB4JdcA8H9pByN7AyrROpA12zD0k3w/S1MMYbdqpGe4DLE16h4HGHhJRUvZw7zpCi7Z1NeaOapSmJhY/8wlO14DC1XtK6T3huSRBp3NyBVFd0kdJRqLqO8qoUWZ3sH4FrECxRCUuNbdoWqvunx4NuLwMJUsgTJexDWJy6W6G7KnjCimQdyMfKaWeWRgnrhPbpPCWavMKxkTaWCV/xnXX/6gPLSf8KJw1OiQRNeOAvijd4x7j4tEaPtcAC8FnhPc0jpWsn2sfRfssbvAtyvOX0oGBddSAQ04Yk0POxzqbYYxU1tQE+LZoo4zDeQqqaMpJxpzLZsNrL0vPoNAqO4pBOpVTqq0Kf/oyL9+4pDciEfP+IMQMvoqGog2RVjdd/49oTOjPCCh485ShRIn+AwJhzDSbY02nJYXhut3SANGvt76eV/p4SV9OWDgqoAb/+4c7vce3BVRlR+xbNKUgUqFdIBxYFs7umLWrG6Rc3a6RleAllGtnJSCWl+P4=
+  app: bolsa-de-empleos-server
+  on:
+    branch: filtro
