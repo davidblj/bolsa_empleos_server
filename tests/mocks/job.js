@@ -14,6 +14,10 @@ exports.queryBySalary = {
     salary: 2000000
 };
 
+exports.queryByDate = {
+    publishedDate: 7
+};
+
 exports.queryByUnknownValue = {
     languages: "Japanese",
 };
@@ -41,10 +45,9 @@ exports.queryByAllOptions = {
     technicalRole: "Developer"
 };
 
-exports.paginateByDate = {
-    dayPosted: 5
+exports.organizedBySalary = {
+    sortedBySalary: true
 };
-
 // By default documents are inserted in order (insertMany). https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/#behaviors
 // An objectId is sorted naturally (almost). https://docs.mongodb.com/manual/reference/bson-types/#objectid
 
@@ -61,6 +64,7 @@ exports.jobs_filter = [
         setTimeOffset: '',
         technicalRole: "Developer",
         urgent: false,
+        timePosted: getDate(0)     // -14
     },
     {
         jobName: "Web UI Developer",
@@ -74,6 +78,7 @@ exports.jobs_filter = [
         setTimeOffset: '',
         technicalRole: "Developer",
         urgent: false,
+        timePosted: getDate(1)      // -6
     },
     {
         jobName: "Software Developer",
@@ -87,6 +92,7 @@ exports.jobs_filter = [
         technicalRole: "Developer",
         setTimeOffset: '',
         urgent: false,
+        timePosted: getDate(2)         // -3
     }
 ];
 
@@ -102,7 +108,6 @@ exports.jobs_pagination = [
         jobType: "Part time",
         technicalRole: "Developer",
         urgent: false,
-        timePosted: getDate(0)
     },
     {
         jobName: "Web UI Developer",
@@ -114,8 +119,7 @@ exports.jobs_pagination = [
         salary: 2000000,
         jobType: "Full time",
         technicalRole: "Developer",
-        urgent: false,
-        timePosted: getDate(1)
+        urgent: false
     },
     {
         jobName: "Software Developer",
@@ -127,8 +131,7 @@ exports.jobs_pagination = [
         salary: 1200000,
         jobType: "Full time",
         technicalRole: "Developer",
-        urgent: false,
-        timePosted: getDate(2)
+        urgent: false
     },
     {
         jobName: "Business analyst",
@@ -140,8 +143,7 @@ exports.jobs_pagination = [
         salary: 4000000,
         jobType: "Contract",
         technicalRole: "Analyst",
-        urgent: false,
-        timePosted: getDate(3)
+        urgent: false
     },
     {
         jobName: "Quality Assurance analyst",
@@ -154,7 +156,6 @@ exports.jobs_pagination = [
         jobType: "Contract",
         technicalRole: "Analyst",
         urgent: false,
-        timePosted: getDate(4)
     },
     {
         jobName: "Marketing analyst",
@@ -166,8 +167,7 @@ exports.jobs_pagination = [
         salary: 5000000,
         jobType: "Contract",
         technicalRole: "Analyst",
-        urgent: false,
-        timePosted: getDate(5)
+        urgent: false
     },
     {
         jobName: "QA Automation",
@@ -179,8 +179,7 @@ exports.jobs_pagination = [
         salary: 3000000,
         jobType: "Contract",
         technicalRole: "Tester",
-        urgent: false,
-        timePosted: getDate(6)
+        urgent: false
     },
     {
         jobName: "QA Engineer",
@@ -192,8 +191,7 @@ exports.jobs_pagination = [
         salary: 3500000,
         jobType: "Contract",
         technicalRole: "Tester",
-        urgent: false,
-        timePosted: getDate(7)
+        urgent: false
     },
     {
         jobName: "Test Automation Engineer",
@@ -205,17 +203,16 @@ exports.jobs_pagination = [
         salary: 2000000,
         jobType: "Contract",
         technicalRole: "Tester",
-        urgent: false,
-        timePosted: getDate(8)
+        urgent: false
     }
 ];
 
 function getDate(index) {
 
-    let daysArray = [1, 5, 10, 15, 20, 25, 30, 1, 5];
+    let daysArray = [14, 6, 3];
     let dayInMillis = daysArray[index] * 24 * 60 * 60 * 1000;
     let date = new Date();
-    date = new Date(date.getTime() - dayInMillis);
 
+    date = new Date(date.getTime() - dayInMillis);
     return date;
 }

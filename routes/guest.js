@@ -2,6 +2,7 @@ let express = require('express');
 let status = require('http-status');
 let mongoose = require('mongoose');
 
+// todo: use a middleware to handle errors
 module.exports = function (wagner) {
 
     let api = express();
@@ -21,7 +22,6 @@ module.exports = function (wagner) {
 
             CompanyUser.findOne({companyName: companyName}, '-hash -role',function (err, company) {
 
-                // todo: use a function;
                 if(err){
                     return res
                         .status(status.INTERNAL_SERVER_ERROR)
@@ -96,19 +96,20 @@ module.exports = function (wagner) {
         };
     }));
 
-    // indexed fields: jobName, ownerCompany
+    // indexed fields: jobName (text), ownerCompany (text)
+    // compound indexed fields: (salary: -1, _id: -1)
     api.get('/fetchJobs', wagner.invoke(function (Job) {
 
         return function (req, res) {
 
             // todo: validations
-            // todo: trim results by date
-            // todo: organize by highest pay, most relevant. Possibly most viewed
+            // todo: organize by most popular
             // todo: reduce query length
 
             // filtering
             let searchQuery = req.query.find;
-            let salaryQuery = req.query.salary;
+            let salaryQuery = +req.query.salary;
+            let publishedDate = req.query.publishedDate;
 
             // pagination
             let pageSize = 3;
@@ -116,26 +117,29 @@ module.exports = function (wagner) {
 
             let currentId = req.query.currentId;
             let pageJump = req.query.pageJump;
-            let dayOffset = req.query.dayPosted;
-            let highestPay = req.query.highestPay;
+
+            let sortedBySalary = req.query.sortedBySalary;
+            let currentSalaryPrice = +req.query.currentSalaryPrice;
+
             let relevance = req.query.relevance;
 
-            if (salaryQuery) {
+            if (currentId) {
 
-                salaryQuery = +req.query.salary;
+                currentId = new mongoose.Types.ObjectId(currentId.toString());
             }
 
             // options population
             let optionsByField = [];
-            for(let key in req.query) {
+            for (let key in req.query) {
 
                 // todo: refactor
-                if(req.query.hasOwnProperty(key)
-                    && key !== 'find' && key !== 'salary' && key !== 'dayPosted'
-                        && key !== 'currentId' && key !== 'pageJump') {
+                if (req.query.hasOwnProperty(key)
+                    && key !== 'find' && key !== 'salary' && key !== 'publishedDate'
+                    && key !== 'currentId' && key !== 'pageJump' && key !== 'sortedBySalary'
+                    && key !== 'currentSalaryPrice') {
 
-                    let tempOptions =  req.query[key].split(',');
-                    for(let i = 0; i < tempOptions.length; i++) {
+                    let tempOptions = req.query[key].split(',');
+                    for (let i = 0; i < tempOptions.length; i++) {
 
                         let value = {};
                         value[key] = tempOptions[i];
@@ -146,22 +150,24 @@ module.exports = function (wagner) {
                 }
             }
 
+            // todo: refactor
             let query = [];
+
             function buildQueryByFields(index, tempQuery) {
 
                 let field = optionsByField[index];
 
-                for(let i = 0; i < field.length; i ++) {
+                for (let i = 0; i < field.length; i++) {
 
                     let optionInField = field[i];
 
                     // this is a one time execution loop
-                    for(let key in optionInField) {
-                        if(optionInField.hasOwnProperty(key)) {
+                    for (let key in optionInField) {
+                        if (optionInField.hasOwnProperty(key)) {
 
                             tempQuery[key] = optionInField[key];
 
-                            if(index === (optionsByField.length - 1)) {
+                            if (index === (optionsByField.length - 1)) {
 
                                 let copy = Object.assign({}, tempQuery);
                                 query.push(copy);
@@ -175,8 +181,8 @@ module.exports = function (wagner) {
                 }
             }
 
-            // mongodb aggregate pipeline setup (order is vital)
-            if(searchQuery) {
+            // mongodb aggregate pipeline setup
+            if (searchQuery) {
 
                 pipe.push({
                     $match: {
@@ -185,7 +191,7 @@ module.exports = function (wagner) {
                 });
             }
 
-            if(salaryQuery) {
+            if (salaryQuery) {
 
                 pipe.push({
                     $match: {
@@ -194,7 +200,24 @@ module.exports = function (wagner) {
                 });
             }
 
-            if(optionsByField.length) {
+            if (publishedDate) {
+
+                let dateInUTC = new Date();
+                let timeOffset = publishedDate * 24 * 60 * 60 * 1000;
+
+                let dayLimitInMilliseconds = (dateInUTC.getTime() - timeOffset);
+                let date = new Date(dayLimitInMilliseconds);
+
+                pipe.push(
+                    {
+                        $match: {
+                            timePosted: {$gt: date}
+                        }
+                    }
+                );
+            }
+
+            if (optionsByField.length) {
 
                 buildQueryByFields(0, {});
                 pipe.push({
@@ -204,42 +227,26 @@ module.exports = function (wagner) {
                 });
             }
 
-            // last day, last week, last 2 weeks, last month, any time
-            if(dayOffset) {
+            if(sortedBySalary) {
 
-                let dateInUTC = new Date();
-                let millisecondsOffset = dayOffset * 24 * 60 * 60 * 1000;
-
-                let dayLimitInMillis = (dateInUTC.getTime() - millisecondsOffset) + dateInUTC.getTimezoneOffset();
-                let date = new Date(dayLimitInMillis);
-
-                pipe.push(
-                    {
-                        $match: {
-                            timePosted: {$gt: date}
-                        }
-                    }
-                );
-
-                if(pageJump > 0 || !currentId) {
+                if (pageJump > 0 || !currentId) {
 
                     pipe.push({
-                        $sort: { _id: -1}
-                    });
+                            $sort: {salary: -1, _id: -1}
+                        });
                 }
 
-                // todo: refactor
-                if(currentId && pageJump) {
+                if (currentId && currentSalaryPrice && pageJump) {
 
-                    if(pageJump > 0) {
+                    if (pageJump > 0) {
 
                         pipe.push(
                             {
-                                $sort: {_id: -1}
-                            },
-                            {
                                 $match: {
-                                    _id: {$gt: currentId}
+                                    $or: [
+                                        {salary: {$lt: currentSalaryPrice}},
+                                        {$and: [ {_id: {$lte: currentId}}, {salary: currentSalaryPrice} ]}
+                                    ]
                                 }
                             },
                             {
@@ -250,8 +257,14 @@ module.exports = function (wagner) {
 
                         pipe.push(
                             {
+                                $sort: {salary: 1, _id: 1}
+                            },
+                            {
                                 $match: {
-                                    _id: {$gt: currentId}
+                                    $or: [
+                                        {salary: {$gt: currentSalaryPrice}},
+                                        {$and: [ {_id: {$gt: currentId}}, {salary: currentSalaryPrice} ]}
+                                    ]
                                 }
                             },
                             {
@@ -261,33 +274,28 @@ module.exports = function (wagner) {
                                 $limit: pageSize
                             },
                             {
-                                $sort: {_id: -1}
-                            })
+                                $sort: {salary: -1, _id: -1}
+                            });
                     }
                 }
             }
 
-            /*if(highestPay) {
-                // todo: highest payed pagination
-            }
-
-            if(relevance) {
+            /*if(relevance) {
                 // todo: most applied pagination
             }*/
 
-            if(!relevance && !highestPay && !dayOffset) {
+            if (!relevance && !sortedBySalary) {
 
                 // do not sort the insertion order when the page jump is negative
-                if(pageJump > 0 || !currentId) {
+                if (pageJump > 0 || !currentId) {
 
                     pipe.push({
-                        $sort: { _id: -1}
+                        $sort: {_id: -1}
                     });
                 }
 
                 if (currentId && pageJump) {
 
-                    currentId = new mongoose.Types.ObjectId(currentId.toString());
                     if (pageJump > 0) {
 
                         pipe.push(
@@ -329,8 +337,15 @@ module.exports = function (wagner) {
                 });
             }
 
-            // todo: project values: _id, jobName, salary and ownerCompany
+            pipe.push({
+                $project: {
+                    jobName: 1,
+                    ownerCompany: 1,
+                    salary: 1
+                }
+            });
 
+            // console.log(JSON.stringify(pipe));
             Job.aggregate(
                 pipe,
                 function (err, jobs) {
@@ -344,7 +359,6 @@ module.exports = function (wagner) {
 
                     res.json(jobs);
                 });
-            // console.log(jobs);
         }
     }));
 

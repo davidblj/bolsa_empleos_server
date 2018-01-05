@@ -3,6 +3,7 @@ let Schema = mongoose.Schema;
 
 // todo: create a quantity variable on the number of candidates
 // todo: set the expiryDate to a date type
+// todo: set a virtual (or a default function) on time posted to add the user local time zone
 let jobSchema = {
 
     jobName: {

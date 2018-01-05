@@ -33,6 +33,7 @@ describe('Guest API', function () {
 
             it('should return all jobs from a search by text', fetchJobsTests.searchByText);
             it('should return all jobs from a search by salary', fetchJobsTests.searchBySalary);
+            it('should return all jobs from a search by published date (past 1 week)', fetchJobsTests.searchByDate);
             it('should return all jobs from a search on one field with multiple values', fetchJobsTests.searchByMultipleValues);
             it('should return all jobs from an intersection of two sets', fetchJobsTests.twoSets);
             it('should return all jobs from an intersection of three sets', fetchJobsTests.threeSets);
@@ -45,9 +46,10 @@ describe('Guest API', function () {
 
             before('insert a list of jobs into the database to paginate', fetchJobsTests.insertJobsToPaginate);
 
-            it('should return all jobs of page 2', fetchJobsTests.forwardPagination);
+            it('should return all jobs of page 3, by jumping from page to 1 to page 3', fetchJobsTests.forwardPagination);
             it('should return all jobs of page 2, by jumping from page to 3 to page 2', fetchJobsTests.backwardPagination);
-            it('should return ...', fetchJobsTests.forwardPaginationByTime);
+            it('should return all jobs of page 3 organized by salary, by jumping from page to 1 to page 3', fetchJobsTests.forwardPaginationBySalary);
+            it('should return all jobs of page 2 organized by salary, by jumping from page to 3 to page 2', fetchJobsTests.backwardPaginationBySalary);
 
             after('delete all jobs in the database', fetchJobsTests.afterAllTest);
         });

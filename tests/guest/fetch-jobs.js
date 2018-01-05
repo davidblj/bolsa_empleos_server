@@ -130,6 +130,24 @@ exports.searchBySalary = function (done) {
         });
 };
 
+exports.searchByDate = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.queryByDate)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res.statusCode).to.be.equal(200);
+            expect(res).to.be.json;
+            expect(res.body).to.be.an('Array');
+            expect(res.body).to.be.an('Array').to.have.lengthOf(2);
+
+            expect(res.body[0].jobName).to.be.equal('Software Developer');
+            expect(res.body[1].jobName).to.be.equal('Web UI Developer');
+            done()
+        });
+};
+
 exports.twoSets = function (done) {
 
     request
@@ -249,17 +267,69 @@ exports.backwardPagination = function (done) {
         });
 };
 
-exports.forwardPaginationByTime = function () {
+exports.forwardPaginationBySalary = function (done) {
 
     request
         .get(job.fetchJobsURL)
-        .query(job.paginateByDate)
+        .query(job.organizedBySalary)
         .end(function (err, res) {
             expect(err).to.be.null;
 
-            console.log(res.body)
-            // todo: paginate
-        })
+            let currentId = res.body[0]._id;
+            let currentSalaryPrice = res.body[0].salary;
+            let query = { sortedBySalary: true, currentId: currentId, currentSalaryPrice: currentSalaryPrice, pageJump: 2};
+            request
+                .get(job.fetchJobsURL)
+                .query(query)
+                .end(function (err, res) {
+                    expect(err).to.be.null;
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res).to.be.json;
+
+                    expect(res.body).to.be.an('Array');
+                    expect(res.body).to.be.an('Array').to.have.lengthOf(3);
+                    expect(res.body[0].jobName).to.be.equal('Test Automation Engineer');
+                    done();
+                });
+        });
+};
+
+exports.backwardPaginationBySalary = function (done) {
+
+    request
+        .get(job.fetchJobsURL)
+        .query(job.organizedBySalary)
+        .end(function (err, res) {
+            expect(err).to.be.null;
+
+            let currentId = res.body[0]._id;
+            let currentSalaryPrice = res.body[0].salary;
+            let query = { sortedBySalary: true, currentId: currentId, currentSalaryPrice: currentSalaryPrice, pageJump: 2};
+            request
+                .get(job.fetchJobsURL)
+                .query(query)
+                .end(function (err, res) {
+                    expect(err).to.be.null;
+
+                    let currentId = res.body[0]._id;
+                    let currentSalaryPrice = res.body[0].salary;
+                    query = { sortedBySalary: true, currentId: currentId, currentSalaryPrice: currentSalaryPrice, pageJump: -1};
+                    request
+                        .get(job.fetchJobsURL)
+                        .query(query)
+                        .end(function (err, res) {
+                            expect(err).to.be.null;
+                            expect(res.statusCode).to.be.equal(200);
+                            expect(res).to.be.json;
+
+                            console.log(res.body);
+                            expect(res.body).to.be.an('Array');
+                            expect(res.body).to.be.an('Array').to.have.lengthOf(3);
+                            expect(res.body[0].jobName).to.be.equal('QA Engineer');
+                            done();
+                        });
+                });
+        });
 };
 
 exports.afterAllTest = function (done) {
