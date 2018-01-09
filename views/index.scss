@@ -1,0 +1,58 @@
+$blue-gray: #f3f5f6;
+$strong-blue-gray: #c3cddc;
+$strong-gray: #a2b1b9;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: $blue-gray;
+  font-family: 'Raleway', sans-serif;
+  height: 100vh;
+  position: relative;
+}
+
+.label-box {
+
+  color: $strong-blue-gray;
+  font: {
+    size: 10em;
+    weight: 200;
+  }
+
+  letter-spacing: 4px;
+  text-align: center;
+  text-shadow: 1px 1px 2px $strong-gray;
+
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  p {
+    display: block;
+  }
+
+  i {
+    animation: {
+      duration: 5s;
+      name: rotate;
+      iteration-count: infinite;
+      timing-function: linear;
+    }
+    display: block;
+    margin-top: .3em;
+    font-size: 100px;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
