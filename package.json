@@ -7,8 +7,7 @@
     "start": "node ./server.js",
     "startServer": "NODE_ENV=development nodemon ./server.js",
     "startMongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/",
-    "localTesting": "NODE_ENV=local-testing mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js",
-    "remoteTesting": "NODE_ENV=remote-testing mocha ./tests/routes.company.spec.js"
+    "localTesting": "NODE_ENV=local-testing mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +31,6 @@
     "jsonwebtoken": "^7.4.3",
     "mongoose": "^4.11.6",
     "morgan": "^1.8.2",
-    "path": "^0.12.7",
     "should": "^13.1.3",
     "supertest": "^3.0.0",
     "underscore": "^1.8.3",
