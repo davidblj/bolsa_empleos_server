@@ -4,9 +4,9 @@ let jwt = require('jsonwebtoken');
 let config = require('../../config/environment');
 let Schema = mongoose.Schema;
 
-let userSchema = {
+let schema = {
 
-    applicantName: {
+    name: {
         type: String,
         required: true
     },
@@ -54,24 +54,24 @@ let userSchema = {
     salt: String
 };
 
-let schema = new mongoose.Schema(userSchema);
+let candidateSchema = new mongoose.Schema(schema);
 
 // todo: remove duplicate code
-schema.methods.setPassword = function (password) {
+candidateSchema.methods.setPassword = function (password) {
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
 };
 
-schema.methods.validPassword = function (password) {
+candidateSchema.methods.validPassword = function (password) {
     let hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
     return this.hash === hash;
 };
 
-schema.virtual('password').set(function (password) {
+candidateSchema.virtual('password').set(function (password) {
     this.setPassword(password);
 });
 
-schema.methods.generateJwt = function () {
+candidateSchema.methods.generateJwt = function () {
     let expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);
 
@@ -83,5 +83,7 @@ schema.methods.generateJwt = function () {
     }, config.secret);
 };
 
-module.exports = schema;
-module.exports.userSchema =  userSchema;
+let userModel = mongoose.model('Candidate', candidateSchema);
+
+module.exports = userModel;
+module.exports.candidateSchema = candidateSchema;
