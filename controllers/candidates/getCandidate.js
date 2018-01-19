@@ -20,5 +20,5 @@ const buildQuery = (data) => {
             options.push(field);
         }
     }
-    return { $or: options};
+    return {$or: options};
 };

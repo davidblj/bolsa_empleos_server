@@ -13,6 +13,7 @@ module.exports = async (data) => {
         throw error(status.BAD_REQUEST, 'one or more of the following fields are missing: username, email, skills');
     }
 
+    // todo: unique indexing
     let query = { username: username, email: email};
     let candidate = await getCandidate(query);
 
