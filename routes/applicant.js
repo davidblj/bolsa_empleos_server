@@ -6,6 +6,7 @@ module.exports = function (wagner) {
 
     let api = express();
 
+    // marked for delete
     api.post('/applicantRegistration', wagner.invoke(function (Applicant) {
 
         return function (req, res) {
@@ -69,6 +70,7 @@ module.exports = function (wagner) {
         }
     }));
 
+    // marked for delete
     api.get('/getAppliedJobs', auth.verifyToken, wagner.invoke(function (Applicant) {
 
         return function (req, res) {

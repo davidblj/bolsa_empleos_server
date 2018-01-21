@@ -8,7 +8,7 @@ router.use('/candidates', candidates);
 router.use('/guest', require('../routes/guest')(wagner));*/
 
 router.use((err, req, res, next) => {
-   res.status(err.status || 500).json({ message: err.message || err.toString()});
+   res.status(err.status || 500).json({ error: err.message || err.toString()});
     // todo: handle errors that are not an instance of Error
 });
 

@@ -1,17 +1,19 @@
+// libraries
 const express = require('express');
-const router = express.Router();
 const status = require('http-status');
+const handler = require(process.cwd() + '/utils/controller-handler');
 
-const createCandidate = require('../../controllers/candidates/createCandidate');
+// routing
+const router = express.Router();
+const jobs = require('./jobs');
 
-router.post('/', async (req, res, next) => {
+// controllers
+const createCandidate = require(process.cwd() + '/controllers/candidates/createCandidate');
 
-    try {
-        await createCandidate(req.body);
-        res.status(status.CREATED).json({message: 'success'});
-    } catch (err) {
-        next(err);
-    }
-});
+router.post('/', handler(createCandidate, status.CREATED,
+    (req, res, next) => [req.body]
+));
+
+router.use('/:userId/jobs',jobs);
 
 module.exports = router;

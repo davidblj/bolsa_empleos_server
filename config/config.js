@@ -4,7 +4,6 @@ const express               = require('express');
 const bodyParser            = require('body-parser');
 const logger                = require('morgan');
 const environment           = require('./environment');
-const expressValidator      = require('express-validator');
 
 module.exports = function (app) {
 
@@ -14,6 +13,5 @@ module.exports = function (app) {
     app.use(logger('dev'));
     app.use(express.static('views'));
     app.use(bodyParser.json());
-    // app.use(expressValidator());
     app.use(bodyParser.urlencoded({extended : false}));
 };

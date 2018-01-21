@@ -1,11 +1,19 @@
-const {getCandidate} = require('../../services/candidate');
+// libraries
+const error = require(process.cwd() + '/utils/error');
 
-module.exports = async (data) => {
+// services
+const {getCandidate} = require(process.cwd() + '/services/candidate');
+
+// projection is optional
+module.exports = async (data, projection) => {
+
+    if(!data) {
+         throw error(status.BAD_REQUEST, 'at least one field of candidate schema is missing')
+    }
 
     const query = buildQuery(data);
-    return getCandidate(query);
+    return getCandidate(query, projection);
 };
-
 
 const buildQuery = (data) => {
 
