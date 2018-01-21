@@ -1,5 +1,6 @@
 // libraries
 const error = require(process.cwd() + '/utils/error');
+const log = require(process.cwd() + '/utils/debug');
 
 // services
 const {getCandidate} = require(process.cwd() + '/services/candidate');
@@ -28,5 +29,9 @@ const buildQuery = (data) => {
             options.push(field);
         }
     }
-    return {$or: options};
+
+    let query = {$or: options};
+    log.common('query build: ', query);
+
+    return query;
 };

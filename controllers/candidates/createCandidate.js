@@ -1,6 +1,7 @@
 // libraries
 const error = require(process.cwd() + '/utils/error');
 const status = require('http-status');
+const log = require(process.cwd() + '/utils/debug');
 
 // controllers
 const getCandidate = require('./getCandidate');
@@ -29,6 +30,7 @@ module.exports = async (data) => {
 
     // json string parsing to an array of strings
     data.skills = JSON.parse(skills);
+    log.common('skill array parsing :', data.skills);
 
     let user = await createCandidate(data);
     return {Location: 'candidates/' + user._id};

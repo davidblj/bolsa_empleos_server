@@ -2,6 +2,7 @@
 
 // todo: add a production configuration
 let env = process.env.NODE_ENV;
-let config = require(`./environments/${env}`);
+let environment = require(`./environments/${env}`);
 
-module.exports = config;
+module.exports = environment;
+
