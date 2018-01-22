@@ -27,9 +27,9 @@ You may create a new user using this action. It takes a json object of 10 keys.
 + skills (array[string]) -  known languages and technologies 
 
 + Request (application/json)
-   
+
         {   
-            "name": "John",   
+            "name":"John",   
             "username": "Doe",   
             "password": "CantChaseMe",   
             "id": "007",   
@@ -48,7 +48,21 @@ You may create a new user using this action. It takes a json object of 10 keys.
 + Response 201 (application/json)
 
     + Body 
-    
+
             { 
                 "Location": "candidates/5a63b241e83e404396608e"
             }
+            
+## Jobs [/candidates/{userId}/jobs]
+
++ Parameters
+    + userId: 5a63b241e83e404396608e (required, string) - MongoDB Id from a candidate
+
+### View applied jobs [GET]
+
++ Response 200 (application/json)
+
+        [
+            "_id": "5a63b241e83e4043966032",
+            "_id": "5a63b241e83e4043966034"
+        ]
