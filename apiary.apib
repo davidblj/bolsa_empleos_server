@@ -1,0 +1,54 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# BE
+
+BE is an API for the job vacancy app of the University of Antioquia
+
+## Group Candidates
+ 
+Resources related to a candidate
+
+## Candidates [/candidates]
+ 
+### Create a User [POST]
+
+You may create a new user using this action. It takes a json object of 10 keys. 
+
++ name (string) - fullname
++ username (string) - unique name account
++ password (string) - alphanumeric value of 5 to 15 characters
++ id (string) - unique personal id of numeric values
++ age (string) - numeric value of 1 to 2 characters
++ email (string) - unique email
++ cellphone (string) - numeric value of 10 numbers
++ jobTitle (string) - job preference
++ location (string) - location preference
++ skills (array[string]) -  known languages and technologies 
+
++ Request (application/json)
+   
+        {   
+            "name": "John",   
+            "username": "Doe",   
+            "password": "CantChaseMe",   
+            "id": "007",   
+            "age": "40",   
+            "email": "agent@gmail.com",   
+            "cellphone": "3003102703",   
+            "jobTitle": "agent",   
+            "location": "Budapest",   
+            "skills": [
+                "sharpness",
+                "coldness"
+            ]
+        }
+        
+
++ Response 201 (application/json)
+
+    + Body 
+    
+            { 
+                "Location": "candidates/5a63b241e83e404396608e"
+            }
