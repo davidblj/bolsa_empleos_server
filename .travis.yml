@@ -7,7 +7,7 @@ addons:
     token:
       secure: T0nvIPAwKzIUyOOxpAXsj1bPZLWBQRC5W2WDAOgsQ6HvrplCi1GSMpJWnidc8DnSlZhT8G5rGHRB5JD6k9KKXpZMSpqxc6+sP1GqzJbt4e/52qxJvghfeXhQn1ttlhp2u6HDPrcYwZDKvCgPddKP/hOcY6raLml/7hWiXObs8tgrgN2dXoSy0Bdc/5K4X0BP92GqY+Z1NDAznya0BuWDMyfdL3k+WVn7tx3+9Kzl8Dhnc9D6WgMb7vd8h7JTrzhYz9HGkz/yaQSP9tTOkY3AAaqMZuEanNV2bvULvGoJ6msN+MeyeqxnnzXz6g4gXdIYKPjRXPAKq+oE6xW4AKuvZyZtyH1QdTkZKR+2cSiZrLkSopbuzXA0R7jsQWaCV4KKw5HwERpr2Cg2fpRdWyBhaDg+uka0FGOOd/OayLnyytv/hOoTMbG0pAatKxARiTEoodJh3zAk9V0owLlUsDZQBnzSnWuMxh2PmfFQ7czsAMrmGpceID3ZB5fNdiYGjdREm67mrG7wE947S4Qcee/kvCt63M18TQyPmu378XWYIFlGmG8Ygi0H2uCNlpeJPgY4f76bGB6ozw4T2PTYt3AlmymcnLjR2K3y5XS2s9MnRufAktjZemcY0Gigg+Z+MNRT7ZutbamUkr09TLL1taehUQFRE6cABmsMAk3OBw3o8ao=
     branches:
-      - filtro
+      - /^.*$/
 services:
   - mongodb
 before_script:
