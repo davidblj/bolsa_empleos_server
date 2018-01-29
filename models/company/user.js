@@ -3,7 +3,9 @@ let crypto = require('crypto');
 let jwt = require('jsonwebtoken');
 let config = require('../../config/environment');
 
-// todo: remove the "role" field
+// todo(1): remove the "role" field
+// todo(2): define a new schema for whoever is in charge of the administration
+
 let userSchema = {
 
     companyName: {
@@ -52,7 +54,7 @@ let userSchema = {
         default: 'company'
     },
     hash: String,
-    salt: String       // o contraseña
+    salt: String
 };
 
 let schema = new mongoose.Schema(userSchema);

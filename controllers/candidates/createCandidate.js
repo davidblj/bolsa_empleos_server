@@ -2,12 +2,11 @@
 const error = require(process.cwd() + '/utils/error');
 const status = require('http-status');
 const log = require(process.cwd() + '/utils/debug');
-
-// controllers
-const getCandidate = require('./getCandidate');
+const {buildQuery}= require(process.cwd() + '/utils/query');
 
 // services
 const {createCandidate} = require(process.cwd() + '/services/candidate');
+const {getCandidate} = require(process.cwd() + '/services/candidate');
 
 // todo(1): unique indexing
 
@@ -21,7 +20,8 @@ module.exports = async (data) => {
         throw error(status.BAD_REQUEST, 'one or more of the following fields are missing: username, email, skills');
     }
 
-    let query = {username: username, email: email};
+    let fields = {username: username, email: email};
+    let query = buildQuery(fields);
     let candidate = await getCandidate(query);
 
     if(candidate) {

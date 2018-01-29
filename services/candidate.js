@@ -1,4 +1,4 @@
-let userModel = require(process.cwd() + '/models/candidate/user');
+let userModel = require('../models/candidate/user');
 
 let createCandidate = (data) => {
     return userModel.create(data);
@@ -9,7 +9,13 @@ let getCandidate = (query, projection) => {
     return projection ? modelMethod.select(projection).exec() : modelMethod.exec()
 };
 
+let updateCandidate = (query, update, options) => {
+    let modelMethod = userModel.findOneAndUpdate(query,update);
+    return options ? modelMethod.setOptions(options).exec() : modelMethod.exec()
+};
+
 module.exports = {
     createCandidate: createCandidate,
-    getCandidate: getCandidate
+    getCandidate: getCandidate,
+    updateCandidate: updateCandidate
 };

@@ -1,10 +1,12 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-// todo: create a quantity variable on the number of candidates
-// todo: set the expiryDate to a date type
-// todo: set a virtual (or a default function) on time posted to add the user local time zone
-let jobSchema = {
+// todo(1): create a quantity variable on the number of candidates
+// todo(2): set the expiryDate to a date type
+// todo(3): set a virtual (or a default function) on time posted to add the user local time zone
+// todo(4): add update validators
+
+let schema = {
 
     jobName: {
         type: String,
@@ -50,13 +52,13 @@ let jobSchema = {
         type: Date,
         default: new Date()
     },
-    candidates: [{
+    applicants: [{
         type: Schema.Types.ObjectId,
         ref: 'Applicant'
     }]
 };
 
-let schema = new mongoose.Schema(jobSchema);
+let jobSchema = new mongoose.Schema(schema);
+let jobModel = mongoose.model('Job', jobSchema);
 
-module.exports = schema;
-module.exports.jobSchema = jobSchema;
+module.exports = jobModel;

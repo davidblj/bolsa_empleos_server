@@ -1,6 +1,6 @@
 let express = require('express');
 let status = require('http-status');
-let auth =  require('../middleware/auth');
+let auth =  require('../middleware/authentication');
 
 module.exports = function(wagner) {
 
