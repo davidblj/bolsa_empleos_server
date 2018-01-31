@@ -1,19 +1,24 @@
+const {
+    setPassword,
+    savePassword,
+    validPassword,
+    generateJwt} = require('../../utils/encryption');
 let mongoose = require('mongoose');
-let crypto = require('crypto');
-let jwt = require('jsonwebtoken');
-let config = require('../../config/environment');
 
-// todo(1): remove the "role" field
-// todo(2): define a new schema for whoever is in charge of the administration
+// todo(1): field validation
 
-let userSchema = {
+let schema = {
 
-    companyName: {
+    name: {
+        type: String,
+        required: true
+    },
+    username: {
         type: String,
         unique: true,
         required: true
     },
-    companyDetails: {
+    details: {
         type: String,
         required: true
     },
@@ -21,19 +26,11 @@ let userSchema = {
         type: String,
         required: true
     },
-    name: {
-        type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
-        required: true
-    },
     contact: {
         type: String,
         required: true
     },
-    workingRole: {
+    profile: {
         type: String,
         required: false
     },
@@ -45,7 +42,7 @@ let userSchema = {
         type: String,
         required: true
     },
-    employmentSector: {
+    sector: {
         type: String,
         required: true
     },
@@ -57,33 +54,12 @@ let userSchema = {
     salt: String
 };
 
-let schema = new mongoose.Schema(userSchema);
+let companySchema = new mongoose.Schema(schema);
 
-schema.methods.setPassword = function (password) {
-    this.salt = crypto.randomBytes(16).toString('hex');
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
-};
+companySchema.virtual('password').set(savePassword);
+companySchema.methods.setPassword = setPassword;
+companySchema.methods.validPassword = validPassword;
+companySchema.methods.generateJwt = generateJwt;
 
-schema.methods.validPassword = function (password) {
-    let hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
-    return this.hash === hash;
-};
-
-schema.virtual('password').set(function (password) {
-    this.setPassword(password);
-});
-
-schema.methods.generateJwt = function () {
-    let expiry = new Date();
-    expiry.setDate(expiry.getDate() + 7);
-
-    return jwt.sign({
-        _id: this._id,
-        name: this.companyName,
-        role: this.role,
-        exp: parseInt(expiry.getTime()/1000)
-    }, config.secret);
-};
-
-module.exports = schema;
-module.exports.userSchema =  userSchema;
+let companyModel = mongoose.model('Company', companySchema);
+module.exports = companyModel;

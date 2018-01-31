@@ -1,6 +1,7 @@
-const error = ( status, message ) => ({
+const error = ( status, message, stack ) => ({
     status,
-    message
+    message,
+    stack
 });
 
 module.exports = error;

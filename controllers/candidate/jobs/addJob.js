@@ -1,7 +1,6 @@
 // libraries
 const status = require('http-status');
 const error = require(process.cwd() + '/utils/error');
-const log = require(process.cwd() + '/utils/debug');
 
 // services
 const {updateJob} = require(process.cwd() + '/services/job');

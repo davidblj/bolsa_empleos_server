@@ -5,7 +5,7 @@ const config = (app) => {
 };
 
 const variables = {
-    'secret':  'omega',
+    'secret':  'dev-key',
     'port': process.env.PORT || 3000,
     'database': 'mongodb://localhost:27017/bolsa-de-empleos'
 };

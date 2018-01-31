@@ -1,6 +1,7 @@
-let crypto = require('crypto');
-let jwt = require('jsonwebtoken');
-let config = require('../config/environment');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const log = require(process.cwd() + '/utils/debug');
+const {variables} = require('../config/environment');
 
 function setPassword(password) {
     this.salt = crypto.randomBytes(16).toString('hex');
@@ -20,12 +21,17 @@ function generateJwt() {
     let expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);
 
-    return jwt.sign({
+    let content = {
         _id: this._id,
         name: this.username,
         role: this.role,
         exp: parseInt(expiry.getTime()/1000)
-    }, config.secret);
+    };
+    let token = jwt.sign(content, variables.secret);
+
+    log.common(`generating a json web token with: ${JSON.stringify(content)}`);
+    log.common(`generated token: ${token}`);
+    return token;
 }
 
 module.exports = {

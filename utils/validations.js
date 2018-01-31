@@ -1,7 +1,9 @@
+const status = require('http-status');
+const error = require(process.cwd() + '/utils/error');
 const validate = require('validator');
 
 // todo(1): password validation: it must contain at least 1 number
-// todo(2): define a cellphone Regex for colombia (do a contribution to validator.js)
+// todo(2): define a cellphone Regex for colombia (do a contribution to validator)
 
 const isMongoId = () => ({
     validator: (value) => validate.isMongoId(value),
@@ -30,7 +32,7 @@ const isEmail = () => ({
 
 const isNumeric = () => ({
     validator: (value) => validate.isNumeric(value),
-    message: '{VALUE} is not of type {TYPE}'
+    message: '{VALUE} must only contain numbers'
 });
 
 const isURL = () => ({
@@ -45,6 +47,10 @@ const match = (comparators) => ({
     message: '{VALUE} is not a valid {PATH}'
 });
 
+const check = (shouldThrow, message) => {
+    if (shouldThrow) throw error(status.BAD_REQUEST, message);
+};
+
 /*const isMobilePhone = () => ({
     validator: (value) => validate.isMobilePhone(value, 'any'),
     message: '{VALUE} is not a valid mobile phone number'
@@ -58,6 +64,7 @@ module.exports = {
     isEmail: isEmail,
     isNumeric: isNumeric,
     isURL: isURL,
-    match: match
+    match: match,
+    check: check
 };
 

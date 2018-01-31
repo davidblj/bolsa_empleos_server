@@ -2,7 +2,7 @@ const {
     setPassword,
     savePassword,
     validPassword,
-    generateJwt} = require('../../utils/password-encription');
+    generateJwt} = require('../../utils/encryption');
 const {
     stringValidator,
     lengthValidator,

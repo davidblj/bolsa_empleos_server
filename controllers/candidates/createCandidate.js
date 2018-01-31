@@ -3,6 +3,7 @@ const error = require(process.cwd() + '/utils/error');
 const status = require('http-status');
 const log = require(process.cwd() + '/utils/debug');
 const {buildQuery}= require(process.cwd() + '/utils/query');
+const {check}= require(process.cwd() + '/utils/validations');
 
 // services
 const {createCandidate} = require(process.cwd() + '/services/candidate');
@@ -16,16 +17,14 @@ module.exports = async (data) => {
         email = data.email,
         skills = data.skills;
 
-    if(!username || !email || !skills) {
-        throw error(status.BAD_REQUEST, 'one or more of the following fields are missing: username, email, skills');
-    }
+    runValidations(username, email, skills);
 
     let fields = {username: username, email: email};
     let query = buildQuery(fields);
     let candidate = await getCandidate(query);
 
     if(candidate) {
-        throw error(status.CONFLICT, 'the username or email already exists');
+        throw error(status.CONFLICT, 'The username or email already exists');
     }
 
     // json string parsing to an array of strings
@@ -34,4 +33,10 @@ module.exports = async (data) => {
 
     let user = await createCandidate(data);
     return {Location: 'candidates/' + user._id};
+};
+
+const runValidations = (username, email, skills) => {
+    check(!username, 'missing field: username');
+    check(!email, 'missing field: password');
+    check(!skills, 'missing field: skills');
 };
