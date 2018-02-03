@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./server.js",
-    "startServer": "NODE_ENV=development DEBUG=app:* nodemon ./server.js",
-    "startMongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/",
-    "localTesting": "NODE_ENV=testing mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js"
+    "doc": "documentation serve --config documentation.yml --watch controllers/* utils/*",
+    "devserver": "NODE_ENV=development DEBUG=app:* nodemon ./server.js",
+    "test": "NODE_ENV=testing mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js",
+    "mongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "chai-jwt": "^2.0.0",
+    "documentation": "^5.3.5",
     "mocha": "^3.5.3",
     "nodemon": "^1.11.0",
     "superagent": "^3.6.0"

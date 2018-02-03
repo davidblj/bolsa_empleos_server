@@ -11,6 +11,14 @@ const {getCandidate} = require(process.cwd() + '/services/candidate');
 
 // todo(1): unique indexing
 
+/**
+ * Controller definition to create a "candidate" user
+ * @module createCandidate
+ *
+ * @function
+ * @param {Object} data - an object containing the user information to be created with
+ * @return {Object} - the object containing a "message" field with the location of the newly created resource
+ */
 module.exports = async (data) => {
 
     let username = data.username,

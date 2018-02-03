@@ -100,9 +100,7 @@ module.exports = function(wagner) {
         }
     }));
 
-    // todo: make this a public route. Use the same route to authenticate all kind of users
-    // autentique al usuario: http://localhost:3000/company/login
-    // Request headers:  name: Content-Type  value: application/json
+    // refactored
     api.post('/login', wagner.invoke(function (CompanyUser, Applicant) {
 
         return function (req,res) {
