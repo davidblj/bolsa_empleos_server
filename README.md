@@ -1,30 +1,37 @@
-# Instrucciones de instalación
+# Requerimientos
 
-### MongoDB
+*[MongoDB](https://www.mongodb.com/)*
 
-Para *[linux](https://stackoverflow.com/questions/33693635/mongod-error-while-loading-shared-libraries-libssl-so-10-libcrypto-so-10)*
+*[NodeJS](https://nodejs.org/en/)*
 
-Para *[windows](https://www.mongodb.com/download-center#community)*
+*[Yarn](https://yarnpkg.com/en/)*
+ 
+# Ejecución
 
-
-### NodeJS
-
-Para *[Windows y linux](https://nodejs.org/en/download/)*
-
-# Ejecución del proyecto
-
-
-Si lo estamos ejecutando por primera vez:
+Se instalan las dependencias:
 
 > yarn install  
 
-Modificamos el script "startMongo" en el archivo "package.json" para que apunte a una carpeta del sistema (\<path>)
+Se modifica la ruta del script "mongo" (package.json) 
 
-> "startMongo": "mongod --dbpath \<path>"
+> "mongo": "mongod --dbpath \<path>"
 
-Luego se inicializa la base de datos y el servidor:
+Se inicia MongoDB y se sirve la aplicación:
 
-> npm run startMongo
+> yarn run mongo
 
-> npm run startServer
+> yarn run devserver
 
+# Documentación
+
+Documentación de la *[API](https://bolsa.docs.apiary.io/#)*.
+
+La documentación del código se auto genera con: 
+
+> yarn run doc
+
+# DevOps
+
+Analísis estático del código con *[SonarQube](https://sonarcloud.io/organizations/davidblj-github/projects)*.
+
+Integración continua con *[Travis CI](https://travis-ci.org/davidblj/bolsa_empleos_server)*.
