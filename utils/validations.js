@@ -51,11 +51,6 @@ const check = (shouldThrow, message) => {
     if (shouldThrow) throw error(status.BAD_REQUEST, message);
 };
 
-/*const isMobilePhone = () => ({
-    validator: (value) => validate.isMobilePhone(value, 'any'),
-    message: '{VALUE} is not a valid mobile phone number'
-});*/
-
 module.exports = {
     isMongoId: isMongoId,
     stringValidator: stringValidator,

@@ -43,8 +43,8 @@ module.exports = async (data) => {
     return {Location: 'candidates/' + user._id};
 };
 
-const runValidations = (username, email, skills) => {
+function runValidations(username, email, skills) {
     check(!username, 'missing field: username');
     check(!email, 'missing field: password');
     check(!skills, 'missing field: skills');
-};
+}

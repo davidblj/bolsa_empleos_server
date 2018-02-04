@@ -48,7 +48,7 @@ let schema = {
     },
     cellphone: {
         type: String,
-        validate: [isNumeric(), lengthValidator(10,10)]
+        validate: [isNumeric(), lengthValidator(10, 10)]
     },
     jobTitle: {
         type: String,

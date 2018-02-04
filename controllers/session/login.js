@@ -34,7 +34,7 @@ module.exports = async (data) => {
     throw error(status.UNAUTHORIZED, 'Incorrect username or password');
 };
 
-const signJwt = (user, password) => {
+function signJwt(user, password) {
 
     let validPassword = user.validPassword(password);
     if (validPassword) {
@@ -43,14 +43,14 @@ const signJwt = (user, password) => {
         log.common('password validation failed');
         throw error(status.UNAUTHORIZED, 'Incorrect username or password');
     }
-};
+}
 
-const buildResponse = (user, token) => {
+function buildResponse(user, token) {
     return { user: user.username, role: user.role, token: token};
-};
+}
 
-const runValidations = (username, password) => {
+function runValidations(username, password) {
     check(!username, 'missing field: username');
     check(!password, 'missing field: password');
-};
+}
 

@@ -5,7 +5,7 @@ const status = require('http-status');
 const mongoose = require('mongoose');
 const log = require(process.cwd() + '/utils/debug');
 
-const verify = (roles) => (req, res, next) => {
+module.exports = (roles) => (req, res, next) => {
 
     try {
         let token = getToken(req);
@@ -21,7 +21,7 @@ const verify = (roles) => (req, res, next) => {
     }
 };
 
-const getToken = (req) => {
+function getToken(req) {
 
     let header = req.get('Authentication');
 
@@ -38,9 +38,9 @@ const getToken = (req) => {
     } else {
         throw error(status.BAD_REQUEST, 'Requires authentication');
     }
-};
+}
 
-const parseJwt = (token) => {
+function parseJwt(token) {
 
     try {
         let decodedToken = jwt.verify(token, variables.secret);
@@ -49,16 +49,13 @@ const parseJwt = (token) => {
     } catch (e){
         throw error(status.UNAUTHORIZED, 'Authentication failed', e.stack);
     }
-};
+}
 
-const verifyRole = (decodedToken, roles) => {
+function verifyRole(decodedToken, roles) {
 
     let authorized = roles.some((role) => role === decodedToken.role) ;
     if (!authorized) {
         log.common(`sent token must have one of the following access rights: ${roles}, but found: ${decodedToken.role}`);
         throw error(status.FORBIDDEN, 'Authorization failed');
     }
-};
-
-module.exports = verify;
-
+}
