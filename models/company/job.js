@@ -1,60 +1,69 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const {
+    isAlphabetic,
+    lengthValidator,
+    isAlphanumeric,
+    match} = require('../../utils/validations');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// todo(1): create a quantity variable on the number of candidates
-// todo(2): set the expiryDate to a date type
-// todo(3): set a virtual (or a default function) on time posted to add the user local time zone
-// todo(4): add update validators
+// todo(1): applicants quantity variable
+// todo(2): set a virtual (or a default function) on time posted to add the user local time zone
+// todo(3): expiry sanitation, owner with a custom schema validation
 
 let schema = {
 
-    jobName: {
+    name: {
         type: String,
         required: true,
+        validate: [isAlphabetic(), lengthValidator(3,15)]
     },
-    ownerCompany: {
+    owner: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphanumeric()
     },
-    candidateType: {
+    to: {
         type: String,
-        required: true
+        required: true,
+        validator: [isAlphabetic(), match(['student', 'graduate', 'both'])]
     },
     languages: {
         type: String,
-         required: true
+        validate: isAlphabetic()
     },
-    expiryDate: {
-        type: String,
-        required: true
+    expiry: {
+        type: Date,
+        required: true,
     },
     salary: {
         type: Number,
         required: true
     },
-    jobType: {
+    type: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphabetic()
     },
-    technicalRole: {
+    role: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphabetic()
     },
     urgent: {
         type: Boolean,
         required: true
     },
-    timePosted: {
+    posted: {
         type: Date,
         default: new Date()
     },
     applicants: [{
         type: Schema.Types.ObjectId,
-        ref: 'Applicant'
+        ref: 'Candidates'
     }]
 };
 

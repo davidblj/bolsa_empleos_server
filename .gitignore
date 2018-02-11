@@ -1,5 +1,6 @@
 # IntelliJ project files
 .idea
+http-requests-log.http
 
 # node dependencies
 node_modules

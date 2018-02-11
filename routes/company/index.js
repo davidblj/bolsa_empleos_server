@@ -10,8 +10,8 @@ const jobs = require('./jobs');
 // middleware
 const authentication = require(process.cwd() + '/middleware/authentication');
 
-router.use('/', authentication(['student', 'graduate']));
+router.use('/', authentication(['company']));
 
-router.use('/jobs',jobs);
+router.use('/jobs', jobs);
 
 module.exports = router;

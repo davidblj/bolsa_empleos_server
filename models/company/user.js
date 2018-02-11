@@ -3,48 +3,61 @@ const {
     savePassword,
     validPassword,
     generateJwt} = require('../../utils/encryption');
+const {
+    isAlphabetic,
+    lengthValidator,
+    isAlphanumeric,
+    isEmail,
+    isURL} = require('../../utils/validations');
 let mongoose = require('mongoose');
-
-// todo(1): field validation
 
 let schema = {
 
     name: {
         type: String,
-        required: true
+        required: true,
+        validate: [isAlphabetic(), lengthValidator(3,30)]
     },
     username: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        validate: [isAlphabetic(), lengthValidator(3,15)]
     },
     details: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphanumeric()
     },
     website: {
         type: String,
-        required: true
+        required: true,
+        validate: isURL()
     },
     contact: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphanumeric()
     },
-    profile: {
+    email: {
         type: String,
-        required: false
+        required: false,
+        validate: isEmail()
     },
     nit: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphanumeric()
     },
     city: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphabetic()
     },
     sector: {
         type: String,
-        required: true
+        required: true,
+        validate: isAlphabetic()
     },
     role: {
         type: String,

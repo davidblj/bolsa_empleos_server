@@ -8,8 +8,9 @@
  * @param {function} [getParams] - a function that returns an array of parameters to be process by "promise"
  *
  * @example
- * getJob(id) // controller definition that needs an id to retrieve a job
- * controllerHandler(getJob, 200, (req, res, next) => req.id) // controller-handler has been exported as "controllerHandler"
+ * getJob(id) // a controller that needs an id to retrieve a job, and goes by this definition
+ * ...
+ * controllerHandler(getJob, 200, (req, res, next) => req.id) // controller-handler is a variable that has been exported and named as "controllerHandler"
  */
 module.exports = (promise, status, getParams) => async (req, res, next) => {
 

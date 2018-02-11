@@ -7,14 +7,29 @@ const log = require('../utils/debug');
 const session = require('./session');
 const candidates = require('./candidates');
 const candidate = require('./candidate');
+const company = require('./company');
+const companies = require('./companies');
 const jobs = require('./jobs');
 
-// todo(1): handle errors that are not an instance of Error (500)
+// todo(1): unexpected error handling
 
+// endpoints
+
+// authentication
 router.use('/session', session);
-router.use('/candidates', candidates);
-router.use('/candidate', candidate);
 
+// candidates
+router.use('/candidate', candidate);
+router.use('/candidates', candidates);
+
+// companies
+router.use('/company', company);
+router.use('/companies', companies);
+
+// jobs
+router.use('/jobs', jobs);
+
+// error handling
 router.use((err, req, res, next) => {
    if (err.stack) log.error(err.stack);
    res.status(err.status || 400).json({ error: err.message || err.toString()});

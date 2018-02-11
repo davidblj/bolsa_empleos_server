@@ -2,7 +2,7 @@
 const status = require('http-status');
 const error = require(process.cwd() + '/utils/error');
 const log = require(process.cwd() + '/utils/debug');
-const {check}= require(process.cwd() + '/utils/validations');
+const {findEmptyFields}= require(process.cwd() + '/utils/validations');
 
 // services
 const {getCompany} = require(process.cwd() + '/services/company');
@@ -13,7 +13,7 @@ module.exports = async (data) => {
     let username = data.username,
         password = data.password;
 
-    runValidations(username, password);
+    runValidations(data);
 
     let query = {username: username};
     let companyUser = await getCompany(query);
@@ -46,11 +46,10 @@ function signJwt(user, password) {
 }
 
 function buildResponse(user, token) {
-    return { user: user.username, role: user.role, token: token};
+    return { _id: user._pid, user: user.username, role: user.role, token: token};
 }
 
-function runValidations(username, password) {
-    check(!username, 'missing field: username');
-    check(!password, 'missing field: password');
+function runValidations(data) {
+    findEmptyFields(data, ['username', 'password']);
 }
 

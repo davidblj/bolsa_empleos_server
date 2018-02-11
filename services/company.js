@@ -1,4 +1,8 @@
-let userModel = require('../models/company/user');
+const userModel = require('../models/company/user');
+
+const createCompany = (data) => {
+    return userModel.create(data);
+};
 
 const getCompany = (query, projection) => {
     let modelMethod = userModel.findOne(query);
@@ -6,5 +10,6 @@ const getCompany = (query, projection) => {
 };
 
 module.exports = {
+    createCompany: createCompany,
     getCompany: getCompany
 };

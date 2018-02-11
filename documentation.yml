@@ -3,5 +3,10 @@ toc:
     description: Common utilities used across all modules
   - controller-handler
   - debug
+  - validations
   - name: controllers
   - createCandidate
+  - getCandidate
+  - createJob
+  - getJob
+  - createCompany

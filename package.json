@@ -8,7 +8,8 @@
     "doc": "documentation serve --config documentation.yml --watch controllers/* utils/*",
     "devserver": "NODE_ENV=development DEBUG=app:* nodemon ./server.js",
     "test": "NODE_ENV=testing mocha ./tests/routes.company.spec.js ./tests/routes.guest.spec.js",
-    "mongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/"
+    "mongo": "mongod --dbpath /home/david/Software/mongoTestingDataBase/",
+    "index": "mongo scripts/mongo/indexing.js"
   },
   "repository": {
     "type": "git",

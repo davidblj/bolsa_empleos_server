@@ -1,15 +1,15 @@
-let userModel = require('../models/candidate/user');
+const userModel = require('../models/candidate/user');
 
-let createCandidate = (data) => {
+const createCandidate = (data) => {
     return userModel.create(data);
 };
 
-let getCandidate = (query, projection) => {
+const getCandidate = (query, projection) => {
     let modelMethod = userModel.findOne(query);
     return projection ? modelMethod.select(projection).exec() : modelMethod.exec()
 };
 
-let updateCandidate = (query, update, options) => {
+const updateCandidate = (query, update, options) => {
     let modelMethod = userModel.findOneAndUpdate(query,update);
     return options ? modelMethod.setOptions(options).exec() : modelMethod.exec()
 };

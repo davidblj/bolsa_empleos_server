@@ -5,13 +5,12 @@ const handler = require(process.cwd() + '/utils/controller-handler');
 
 // routing
 const router = express.Router();
-const jobs = require('./jobs');
 
-// middleware
-const authentication = require(process.cwd() + '/middleware/authentication');
+// controllers
+const createCompany = require(process.cwd() + '/controllers/companies/createCompany');
 
-router.use('/', authentication(['student', 'graduate']));
-
-router.use('/jobs',jobs);
+router.post('/', handler(createCompany, status.CREATED,
+    (req, res, next) => [req.body])
+);
 
 module.exports = router;

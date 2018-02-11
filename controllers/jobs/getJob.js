@@ -1,16 +1,19 @@
 // retrieve a job's information
-const error = require(process.cwd() + '/utils/error');
-const {buildQuery} = require(process.cwd() + '/utils/query');
+const {check}= require(process.cwd() + '/utils/validations');
 
 // services
 const {getJob} = require(process.cwd() + '/services/job');
 
-module.exports = (fields, projection) => {
+/**
+ * Controller definition to get a job description
+ * @function getJob
+ * @param {String} id - the unique id that identifies a job
+ * @return {Promise<Object>} - a promise that resolves to an object. This object contains the specified job information
+ */
+module.exports = (id) => {
 
-    if(!fields) {
-        throw error(status.BAD_REQUEST, 'at least one field from the \"job\" schema is missing');
-    }
-
-    const query = buildQuery(fields);
+    // the id is already verified on the "idParsing" middleware
+    let query = {_id: id};
+    let projection = '-_id -applicants';
     return getJob(query, projection);
 };

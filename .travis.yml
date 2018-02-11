@@ -17,10 +17,11 @@ services:
 # mongodb indexes should be handled by mongoose
 before_script:
   - sleep 15
-  - mongo mongoScript.js
+  - mongo scripts/mongo/indexing.js
 script:
   - npm run test
   - sonar-scanner
+# travis should write a script command to index our schemas in our remote db
 deploy:
   provider: heroku
   api_key: $HEROKU_TOKEN

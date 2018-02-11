@@ -12,7 +12,7 @@ const common = require('debug')('app:logging');
  * */
 const config = require('debug')('app:configuration');
 
-/** Error logging to highlight thrown errors at
+/** Error logging to highlight thrown errors at runtime
  * @memberof debug
  * @function
  * @param {String} message - the error message to log
@@ -20,7 +20,7 @@ const config = require('debug')('app:configuration');
 const error = require('debug')('app:error');
 
 /**
- * debug exposes logging utilities that should be exclusive to the dev environment. That is, when the app is run
+ * Debug exposes logging utilities that should be exclusive to the dev environment. That is, when the app is run
  * with the config variable "NODE_ENV=development", one must define "DEBUG=app:*" which will enable a logging that
  * is printed by modules (common, config , error). Checkout the debug library and its module management at:
  * {@link https://github.com/visionmedia/debug#wildcards}

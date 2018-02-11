@@ -1,0 +1,79 @@
+### company - job creation
+
+POST http://localhost:3000/company/jobs
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTg4OTM3MDYsImlhdCI6MTUxODI4ODkwNn0.HA-IpERGUsRzxjVKG2wADsgoheQThLzRimt34FsJq4Y
+
+{
+  "name": "Web developer",
+  "description": "Desarrollador con experiencia en JS ...",
+  "to": "student",
+  "languages": [
+    "Ingles"
+  ],
+  "expiry": "2018-10-11",
+  "salary": 200,
+  "type": "Tiempo completo",
+  "role": "desarrollador",
+  "urgent": true
+}
+
+### candidate - session
+
+POST http://localhost:3000/session
+Accept: */*
+Content-Type: application/json
+
+{ "username": "Uruit", "password": "secret" }
+
+### company - user creation
+
+POST http://localhost:3000/companies
+Accept: */*
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "username": "Uruit",
+  "details": "We dont just build apps, we craft ...",
+  "website": "https://www.uruit.com/",
+  "contact": "312 724 56 24",
+  "email": "JaneD@uruit.com",
+  "nit": "790924937 – 6",
+  "city": "Medellin",
+  "sector": "Desarrollo",
+  "password": "secret"
+}
+
+### candidate - session
+
+POST http://localhost:3000/session
+Accept: */*
+Content-Type: application/json
+
+{ "username": "Doe", "password": "secret" }
+
+### candidate - user creation
+
+POST http://localhost:3000/candidates
+Accept: */*
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "username": "Doe",
+  "age": 40,
+  "email": "agent007@gmail.com",
+  "contact": "300 310 27 03",
+  "jobTitle": "spy",
+  "location": "Budapest",
+  "skills": [
+    "math",
+    "english"
+  ],
+  "pid": 1152209135,
+  "password": "secret"
+}
+
+###

@@ -26,6 +26,7 @@ module.exports = function(wagner) {
         };
     }));
 
+    // refactored
     // Registre al nuevo usuario: http://localhost:3000/company/registrar
     // Request headers:  name: Content-Type  value: application/json
     api.post('/registrar', wagner.invoke( function (CompanyUser) {
@@ -189,6 +190,7 @@ module.exports = function(wagner) {
         }
     }));
 
+    // refactored
     // Registre la oferta: http://localhost:3000/company/nuevo
     // Request headers:  name: Content-Type  value: application/json
     api.post('/nuevaOferta', auth.verifyToken, wagner.invoke(function (Job) {
@@ -333,7 +335,6 @@ module.exports = function(wagner) {
     }));
 
     // todo: remove duplicate code from error responses
-    // todo: split this file and export the functions from a controller class
 
     return api;
 };

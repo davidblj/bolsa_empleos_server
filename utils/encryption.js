@@ -23,7 +23,7 @@ function generateJwt() {
 
     let content = {
         _id: this._id,
-        name: this.username,
+        username: this.username,
         role: this.role,
         exp: parseInt(expiry.getTime()/1000)
     };
