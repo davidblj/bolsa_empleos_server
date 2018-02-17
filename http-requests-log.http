@@ -1,3 +1,10 @@
+### company - get jobs
+
+GET http://localhost:3000/company/jobs
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTg4OTM3MDYsImlhdCI6MTUxODI4ODkwNn0.HA-IpERGUsRzxjVKG2wADsgoheQThLzRimt34FsJq4Y
+
 ### company - job creation
 
 POST http://localhost:3000/company/jobs
@@ -19,7 +26,7 @@ Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2Mz
   "urgent": true
 }
 
-### candidate - session
+### company - session
 
 POST http://localhost:3000/session
 Accept: */*
@@ -45,6 +52,13 @@ Content-Type: application/json
   "sector": "Desarrollo",
   "password": "secret"
 }
+
+### candidate - apply
+
+POST http://localhost:3000/candidate/jobs/5a879e1133915f144899a662
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmZDQ2YWIwN2MzODNjNmRhZjNjM2IiLCJ1c2VybmFtZSI6IkRvZSIsInJvbGUiOiJzdHVkZW50IiwiZXhwIjoxNTE5NDQyNjU5LCJpYXQiOjE1MTg4Mzc4NTl9.BQ_22Js63JDT5w2eMOoa0RyKvP1hOyphFLeI1X89vXk
 
 ### candidate - session
 

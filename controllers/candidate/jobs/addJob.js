@@ -17,14 +17,17 @@ module.exports = async (userId, jobId) => {
         throw error(status.NOT_FOUND, 'Job id not found');
     }
 
-    let applies = job.applicants.some((id) => id.equals(userId));
+    let applies = job.applicants.users.some((id) => id.equals(userId));
 
     if (applies) {
         throw error(status.CONFLICT, 'The specified user is already applied');
     }
 
-    let update = { $push: { applicants : userId }};
-        query = {_id: jobId};
+    let update = {
+        $push: {'applicants.users': userId},
+        $inc: {'applicants.amount': 1}
+    };
+    query = {_id: jobId};
 
     // the model validations are skipped
     await updateJob(query, update);

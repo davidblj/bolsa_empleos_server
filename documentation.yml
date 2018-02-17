@@ -10,3 +10,4 @@ toc:
   - createJob
   - getJob
   - createCompany
+  - getJobs

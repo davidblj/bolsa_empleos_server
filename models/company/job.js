@@ -61,10 +61,16 @@ let schema = {
         type: Date,
         default: new Date()
     },
-    applicants: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Candidates'
-    }]
+    applicants: {
+        amount: {
+          type: Number,
+          default: 0
+        },
+        users: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Candidates'
+        }]
+    }
 };
 
 let jobSchema = new mongoose.Schema(schema);

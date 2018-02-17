@@ -7,6 +7,7 @@ const {findEmptyFields}= require(process.cwd() + '/utils/validations');
 const {createJob, getJob} = require(process.cwd() + '/services/job');
 
 /**
+ * Controller definition to create a new job
  * @function createJob
  * @param {Object} data - an object containing the job information to be created with
  * @param {String} company - the company issuing the new job. This field must be provided by a token and not the client

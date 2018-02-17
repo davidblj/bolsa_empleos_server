@@ -8,6 +8,11 @@ const router = express.Router();
 
 // controllers
 const createJob = require(process.cwd() + '/controllers/company/jobs/createJob');
+const getJobs = require(process.cwd() + '/controllers/company/jobs/getJobs');
+
+router.get('/', handler(getJobs, status.OK,
+    (req, res, next) => [req.token.username])
+);
 
 router.post('/', handler(createJob, status.CREATED,
     (req, res, next) => [req.body, req.token.username])
