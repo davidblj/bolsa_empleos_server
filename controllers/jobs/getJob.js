@@ -1,6 +1,3 @@
-// retrieve a job's information
-const {check}= require(process.cwd() + '/utils/validations');
-
 // services
 const {getJob} = require(process.cwd() + '/services/job');
 

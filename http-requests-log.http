@@ -34,6 +34,12 @@ Content-Type: application/json
 
 { "username": "Uruit", "password": "secret" }
 
+### company - getCompany
+
+GET http://localhost:3000/companies/5a7f3c39a3c356405d1541d3
+Accept: */*
+Content-Type: application/json
+
 ### company - user creation
 
 POST http://localhost:3000/companies

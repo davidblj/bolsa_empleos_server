@@ -1,6 +1,10 @@
 // libraries
 const {buildQuery}= require(process.cwd() + '/utils/query');
-const {findConflicts, findEmptyFields}= require(process.cwd() + '/utils/validations');
+const {
+    findConflicts,
+    findEmptyFields,
+    findEmptyArguments,
+    field } = require(process.cwd() + '/utils/validations/controller-validations');
 
 // services
 const {createCandidate, getCandidate} = require(process.cwd() + '/services/candidate');
@@ -33,6 +37,7 @@ module.exports = async (data) => {
  * @private
  */
 function runValidations(data) {
+    findEmptyArguments([field(data, 'data')]);
     findEmptyFields(data, ['username', 'email']);
 }
 

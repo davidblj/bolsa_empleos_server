@@ -1,6 +1,10 @@
 // libraries
 const {buildQuery}= require(process.cwd() + '/utils/query');
-const {findConflicts, findEmptyFields}= require(process.cwd() + '/utils/validations');
+const {
+    findConflicts,
+    findEmptyFields,
+    findEmptyArguments,
+    field }= require(process.cwd() + '/utils/validations/controller-validations');
 
 // services
 const {createCompany, getCompany} = require(process.cwd() + '/services/company');
@@ -13,11 +17,11 @@ const {createCompany, getCompany} = require(process.cwd() + '/services/company')
  */
 module.exports = async (data) => {
 
+    validate(data);
+
     let username = data.username,
         email = data.email,
         nit = data.nit;
-
-    runValidations(data);
 
     let fields = {username: username, email: email, nit: nit};
     let query = buildQuery(fields);
@@ -33,6 +37,7 @@ module.exports = async (data) => {
  * run semantic validations to start the execution logic
  * @private
  */
-function runValidations(data) {
+function validate(data) {
+    findEmptyArguments([field(data, 'data')]);
     findEmptyFields(data, ['username', 'email', 'nit']);
 }

@@ -1,7 +1,4 @@
-const status = require('http-status');
-const error = require(process.cwd() + '/utils/error');
 const validate = require('validator');
-const log = require(process.cwd() + '/utils/debug');
 
 // todo(1): password validator: it must contain at least 1 number
 // todo(2): NIT or RUES validator
@@ -15,7 +12,7 @@ const isMongoId = () => ({
 /**
  * Model validation executed in a mongoose field (of type string) that checks for an string composed exclusively by
  * alphabetic values
- * @memberof validations
+ * @memberof model-validations
  * @return {{validator: function(String): boolean, message: string}}
  */
 const isAlphabetic = () => ({
@@ -29,7 +26,7 @@ const isAlphabetic = () => ({
 /**
  * Model validation executed in a mongoose field (of type string) that checks for an string composed exclusively by
  * alphabetic values and numeric values
- * @memberof validations
+ * @memberof model-validations
  * @return {{validator: function(String): boolean, message: string}}
  */
 const isAlphanumeric = () => ({
@@ -43,7 +40,7 @@ const isAlphanumeric = () => ({
 /**
  * Model validation executed in a mongoose field (of type string or number) that checks a value to have an specific
  * length
- * @memberof validations
+ * @memberof model-validations
  * @function
  * @param {Number} min - lowest bound
  * @param {Number} max - highest bound
@@ -65,60 +62,11 @@ const isURL = () => ({
 });
 
 const match = (comparators) => ({
-   validator: (value) => comparators.some((element) => {
-       return element === value;
-   }),
+    validator: (value) => comparators.some((element) => {
+        return element === value;
+    }),
     message: '{VALUE} is not a valid {PATH}'
 });
-
-/**
- * Find repeated values in a given object
- * @memberof validations
- * @function
- * @param {Object} data - the object to be validated against
- * @param {Object} fields - an object that contains the fields to check for repeated values in the "data" input
- */
-const findConflicts = (data, fields) => {
-
-    let errors = [];
-    let keys = Object.keys(fields);
-
-    keys.forEach((key) => {
-        if (fields.hasOwnProperty(key)) {
-
-            let conflict = data[key] === fields[key];
-            if (conflict) errors.push(key);
-        }
-    });
-
-    let errorFound = errors.length > 0;
-
-    if (errorFound) {
-        throw error(status.CONFLICT, `The following fields must be unique to be stored in the db: ${errors.join(',')}`)
-    }
-};
-
-/**
- * Find a set of fields that are missing in a given object
- * @memberof validations
- * @function
- * @param {Object} data - the object to be validated against
- * @param {Array<String>} fields - an array of names (the keys) to be check in the "data" input
- */
-const findEmptyFields = (data, fields) => {
-    let errors = [];
-
-    fields.forEach((field) => {
-        let value = data[field];
-        if (!value) errors.push()
-    });
-
-    let errorFound = errors.length > 0;
-
-    if (errorFound) {
-        throw error(status.BAD_REQUEST, `Some field or fields are missing: ${errors.join(',')}`)
-    }
-};
 
 /**
  * Remove special characters that might be contained inside an string
@@ -132,8 +80,8 @@ function trim(string) {
 }
 
 /**
- * Set of functions to do short and yet recurrent validations across controllers and models
- * @module validations
+ * Set of functions to do short and yet recurrent validations across mongoose models
+ * @module model-validations
  */
 module.exports = {
     isMongoId: isMongoId,
@@ -143,7 +91,5 @@ module.exports = {
     isEmail: isEmail,
     isURL: isURL,
     match: match,
-    findConflicts: findConflicts,
-    findEmptyFields: findEmptyFields
 };
 

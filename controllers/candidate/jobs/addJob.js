@@ -7,6 +7,13 @@ const {updateJob} = require(process.cwd() + '/services/job');
 const {getJob} = require(process.cwd() + '/services/job');
 const {updateCandidate} = require(process.cwd() + '/services/candidate');
 
+/**
+ * Controller definition to apply a "candidate" user into a certain job
+ * @function addJob
+ * @param {ObjectId} userId - a mongodb id that points to a candidate
+ * @param {ObjectId} jobId - a mongodb id that points to a job that a candidate wants to apply
+ * @return {Promise<void>} - a promise that resolves successfully if the update process was ok
+ */
 module.exports = async (userId, jobId) => {
 
     // the ids are already verified on the "idParsing" middleware

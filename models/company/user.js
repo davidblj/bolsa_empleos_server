@@ -8,7 +8,7 @@ const {
     lengthValidator,
     isAlphanumeric,
     isEmail,
-    isURL} = require('../../utils/validations');
+    isURL} = require('../../utils/validations/model-validations');
 let mongoose = require('mongoose');
 
 let schema = {

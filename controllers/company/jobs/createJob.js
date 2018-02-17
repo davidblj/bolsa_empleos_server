@@ -1,7 +1,7 @@
 // libraries
 const status = require('http-status');
 const error = require(process.cwd() + '/utils/error');
-const {findEmptyFields}= require(process.cwd() + '/utils/validations');
+const {findEmptyFields, findEmptyArguments, field}= require(process.cwd() + '/utils/validations/controller-validations');
 
 // services
 const {createJob, getJob} = require(process.cwd() + '/services/job');
@@ -15,8 +15,8 @@ const {createJob, getJob} = require(process.cwd() + '/services/job');
  */
 module.exports = async (data, company) => {
 
+    validate(data, company);
     let name = data.name;
-    runValidations(data, company);
 
     let query = {name: name, owner: company};
     let job = await getJob(query);
@@ -32,13 +32,10 @@ module.exports = async (data, company) => {
 };
 
 /**
- * run all types of validations required to start the execution logic
+ * run semantic validations to start the execution logic
  * @private
  */
-function runValidations(data, company) {
-
+function validate(data, company) {
+    findEmptyArguments([field(company, 'company')]);
     findEmptyFields(data, ['name']);
-    if (!company) {
-        throw  error(status.INTERNAL_SERVER_ERROR, 'missing argument: company');
-    }
 }

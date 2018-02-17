@@ -4,9 +4,10 @@ const createCompany = (data) => {
     return userModel.create(data);
 };
 
-const getCompany = (query, projection) => {
+const getCompany = (query, projection, lean) => {
     let modelMethod = userModel.findOne(query);
-    return projection ? modelMethod.select(projection).exec() : modelMethod.exec()
+    if (projection) modelMethod.select(projection);
+    return lean ? modelMethod.lean(true).exec() : modelMethod.exec()
 };
 
 module.exports = {
