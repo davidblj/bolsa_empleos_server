@@ -26,5 +26,5 @@ deploy:
   api_key: $HEROKU_TOKEN
   app: bolsa-de-empleos-server
   on:
-    branch: filtro
+    branch: routing
     # branch: develop
