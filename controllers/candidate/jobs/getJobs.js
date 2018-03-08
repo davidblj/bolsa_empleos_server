@@ -1,12 +1,10 @@
 // services
-const {getCandidate} = require(process.cwd() + '/services/candidate');
-
-// todo(1): mongoose population in the jobs field
+const {getJobs} = require(process.cwd() + '/services/candidate');
 
 module.exports = async (id) => {
 
     // id validations by the id-parsing middleware
     let query = {_id: id};
-    let candidate = await getCandidate(query);
-    return candidate ? candidate.jobs: {};
+    let projection = '_id name owner description';
+    return getJobs(query, projection);
 };

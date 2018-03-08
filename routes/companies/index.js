@@ -2,6 +2,8 @@
 const express = require('express');
 const status = require('http-status');
 const handler = require(process.cwd() + '/utils/controller-handler');
+const multer = require('multer');
+const upload = multer({ dest: 'gallery/company/' });
 
 // routing
 const router = express.Router();
@@ -13,8 +15,8 @@ const idParsing = require(process.cwd() + '/middleware/id-parsing');
 const createCompany = require(process.cwd() + '/controllers/companies/createCompany');
 const getCompany = require(process.cwd() + '/controllers/companies/getCompany');
 
-router.post('/', handler(createCompany, status.CREATED,
-    (req, res, next) => [req.body])
+router.post('/', upload.single('logo'), handler(createCompany, status.CREATED,
+    (req, res, next) => [req.body, req.file])
 );
 
 router.use('/:companyId', idParsing('companyId',

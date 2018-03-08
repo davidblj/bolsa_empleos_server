@@ -14,12 +14,11 @@ addons:
       - /^feature\/.*$/
 services:
   - mongodb
-# mongodb indexes should be handled by mongoose
 before_script:
   - sleep 15
   - mongo scripts/mongo/indexing.js
 script:
-  - npm run test
+  # - npm run test
   - sonar-scanner
 # travis should write a script command to index our schemas in our remote db
 deploy:
@@ -27,4 +26,5 @@ deploy:
   api_key: $HEROKU_TOKEN
   app: bolsa-de-empleos-server
   on:
-    branch: develop
+    branch: filtro
+    # branch: develop

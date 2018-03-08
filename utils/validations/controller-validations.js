@@ -30,7 +30,7 @@ const findConflicts = (data, fields) => {
 };
 
 /**
- * Find a set of fields that are missing in a given object
+ * Find a set of fields are missing in a given object
  * @memberof controller-validations
  * @function
  * @param {Object} data - the object to be validated against
@@ -41,7 +41,7 @@ const findEmptyFields = (data, fields) => {
 
     fields.forEach((field) => {
         let value = data[field];
-        if (!value) errors.push()
+        if (!value) errors.push(field)
     });
 
     let errorFound = errors.length > 0;

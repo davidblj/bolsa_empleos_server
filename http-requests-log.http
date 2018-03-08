@@ -3,14 +3,14 @@
 GET http://localhost:3000/company/jobs
 Accept: */*
 Content-Type: application/json
-Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTg4OTM3MDYsImlhdCI6MTUxODI4ODkwNn0.HA-IpERGUsRzxjVKG2wADsgoheQThLzRimt34FsJq4Y
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTk1NzI4NTcsImlhdCI6MTUxODk2ODA1N30.wfhfmlqtOOWmubPvxIard4EfIY7iQ18aguRknuqnahE
 
 ### company - job creation
 
 POST http://localhost:3000/company/jobs
 Accept: */*
 Content-Type: application/json
-Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTg4OTM3MDYsImlhdCI6MTUxODI4ODkwNn0.HA-IpERGUsRzxjVKG2wADsgoheQThLzRimt34FsJq4Y
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTk1NzI4NTcsImlhdCI6MTUxODk2ODA1N30.wfhfmlqtOOWmubPvxIard4EfIY7iQ18aguRknuqnahE
 
 {
   "name": "Web developer",
@@ -59,9 +59,16 @@ Content-Type: application/json
   "password": "secret"
 }
 
+### candidate - getJobs
+
+GET http://localhost:3000/candidate/jobs/
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmZDQ2YWIwN2MzODNjNmRhZjNjM2IiLCJ1c2VybmFtZSI6IkRvZSIsInJvbGUiOiJzdHVkZW50IiwiZXhwIjoxNTE5NDQyNjU5LCJpYXQiOjE1MTg4Mzc4NTl9.BQ_22Js63JDT5w2eMOoa0RyKvP1hOyphFLeI1X89vXk
+
 ### candidate - apply
 
-POST http://localhost:3000/candidate/jobs/5a879e1133915f144899a662
+POST http://localhost:3000/candidate/jobs/5a899d16cf01ba2200852cea
 Accept: */*
 Content-Type: application/json
 Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmZDQ2YWIwN2MzODNjNmRhZjNjM2IiLCJ1c2VybmFtZSI6IkRvZSIsInJvbGUiOiJzdHVkZW50IiwiZXhwIjoxNTE5NDQyNjU5LCJpYXQiOjE1MTg4Mzc4NTl9.BQ_22Js63JDT5w2eMOoa0RyKvP1hOyphFLeI1X89vXk

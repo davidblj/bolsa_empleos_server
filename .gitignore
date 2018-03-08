@@ -8,3 +8,6 @@ node_modules
 # SonarQube and Heroku
 .scannerwork
 .env
+
+# galleries
+gallery

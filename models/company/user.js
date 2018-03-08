@@ -11,8 +11,14 @@ const {
     isURL} = require('../../utils/validations/model-validations');
 let mongoose = require('mongoose');
 
+// todo: logo validation
+
 let schema = {
 
+    logo: {
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
         required: true,
@@ -23,6 +29,11 @@ let schema = {
         unique: true,
         required: true,
         validate: [isAlphabetic(), lengthValidator(3,15)]
+    },
+    admin: {
+        type: String,
+        required: true,
+        validate: [isAlphabetic(), lengthValidator(3,30)]
     },
     details: {
         type: String,
