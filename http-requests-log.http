@@ -1,3 +1,9 @@
+### search - get companies
+
+http://localhost:3000/search/companies?email=david.blj95@gmail.com&username=Uruit
+Accept: */*
+Content-Type: application/json
+
 ### company - get jobs
 
 GET http://localhost:3000/company/jobs

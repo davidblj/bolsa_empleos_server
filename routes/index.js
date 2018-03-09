@@ -4,6 +4,7 @@ const router = express.Router();
 const log = require('../utils/debug');
 
 // routes
+const search = require('./search');
 const session = require('./session');
 const candidates = require('./candidates');
 const candidate = require('./candidate');
@@ -12,6 +13,7 @@ const companies = require('./companies');
 const jobs = require('./jobs');
 
 // todo(1): unexpected error handling
+// todo(2): handle a non json request
 
 // endpoints
 
@@ -28,6 +30,9 @@ router.use('/companies', companies);
 
 // jobs
 router.use('/jobs', jobs);
+
+// search
+router.use('/search', search);
 
 // error handling
 router.use((err, req, res, next) => {
