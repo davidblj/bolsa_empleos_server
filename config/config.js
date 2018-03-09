@@ -1,4 +1,5 @@
 const express               = require('express');
+const cors                  = require('cors');
 const {config, variables}   = require('./environment');
 
 module.exports = function (app) {
@@ -8,6 +9,7 @@ module.exports = function (app) {
     app.set('port', variables.port);
 
     // common middleware
+    app.use(cors(variables.origin));
     app.use(express.static('views'));
     app.use(express.json());
 };

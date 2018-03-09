@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/davidblj/Bolsa-de-Empleos#readme",
   "dependencies": {
+    "cors": "^2.8.4",
     "debug": "^3.1.0",
     "express": "^4.15.4",
     "http-status": "^1.0.1",
