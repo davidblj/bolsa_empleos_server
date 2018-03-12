@@ -2,8 +2,7 @@
 const express = require('express');
 const status = require('http-status');
 const handler = require(process.cwd() + '/utils/controller-handler');
-const multer = require('multer');
-const upload = multer({ dest: 'gallery/company/' });
+const upload = require(process.cwd() + '/config/multer-config');
 
 // routing
 const router = express.Router();
