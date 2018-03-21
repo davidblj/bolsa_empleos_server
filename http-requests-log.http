@@ -1,3 +1,21 @@
+### search - get companies (page 2 to page 1)
+
+http://localhost:3000/search/jobs?size=2&id=5ab0362dcfcbc50b93dfc43d&offset=-1
+Accept: */*
+Content-Type: application/json
+
+### search - get companies (page 1 to page 2)
+
+http://localhost:3000/search/jobs?size=2&id=5ab0362dcfcbc50b93dfc43f&offset=1
+Accept: */*
+Content-Type: application/json
+
+### search - get companies (page 1)
+
+http://localhost:3000/search/jobs?size=2
+Accept: */*
+Content-Type: application/json
+
 ### search - get companies
 
 http://localhost:3000/search/companies?email=david.blj95@gmail.com&username=Uruit

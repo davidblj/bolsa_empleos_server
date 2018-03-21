@@ -1,5 +1,5 @@
 let conn = new Mongo();
-let db = conn.getDB("bolsa-de-empleos-test");
+let db = conn.getDB("bolsa-de-empleos");
 
 // job schema
 printjson(db.jobs.createIndex({name: "text", owner: "text"}));
