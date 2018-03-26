@@ -12,8 +12,8 @@ const jobModel = require(process.cwd() + '/models/company/job');
  * @param {String} [currentId] - the current id where you are standing, or the first "id" of the element in the list
  * returned by the last request. If this parameter is not provided, the first page will be returned instead
  * @param {Number} [offset] - a positive or negative value representing the next page to jump to. A negative value
- * will jump "offset" times to the left of the current page (or id, to say so). A positive value will jump "offset"
- * times to the right of the current page
+ * will jump "offset" times to the left in the current page (or id, to say so). A positive value will jump "offset"
+ * times to the right in the current page
  * @param {Number} [pageSize] - the number of items on each page
  * @return {Promise}
  */

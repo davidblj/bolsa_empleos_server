@@ -2,6 +2,8 @@
 const express = require('express');
 const status = require('http-status');
 const handler = require(process.cwd() + '/utils/controller-handler');
+const multer = require(process.cwd() + '/config/multer-config');
+const upload = multer('./resumes/staging');
 
 // routing
 const router = express.Router();
@@ -13,8 +15,8 @@ const idParsing = require(process.cwd() + '/middleware/id-parsing');
 const createCandidate = require(process.cwd() + '/controllers/candidates/createCandidate');
 const getCandidate = require(process.cwd() + '/controllers/candidates/getCandidate');
 
-router.post('/', handler(createCandidate, status.CREATED,
-    (req, res, next) => [req.body])
+router.post('/', upload.single('resumee'), handler(createCandidate, status.CREATED,
+    (req, res, next) => [req.body, req.file])
 );
 
 router.use('/:userId', idParsing('userId',

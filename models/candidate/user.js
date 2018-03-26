@@ -31,11 +31,6 @@ let schema = {
         type: Number,
         required: true,
     },
-    age: {
-        type: Number,
-        required: true,
-        validate: lengthValidator(1, 2)
-    },
     email: {
         type: String,
         unique: true,
@@ -44,17 +39,8 @@ let schema = {
     },
     contact: {
         type: String,
+        required: true,
         validate: isAlphanumeric()
-    },
-    jobTitle: {
-        type: String,
-        required: true,
-        validate: isAlphabetic()
-    },
-    location: {
-        type: String,
-        required: true,
-        validate: isAlphabetic()
     },
     skills: {
         type: [{type: String, validate: isAlphabetic()}]

@@ -61,48 +61,64 @@ function validate(data, file) {
 }
 
 /**
- * Image storage entry point. Files are stored on a fixed file path: 'gallery/companies/:id'
+ * Image storage entry point. This processing will create and store two new images with
+ * different sizes on a fixed file path: 'gallery/companies/:id'
  * @private
  * @param {File} file - the original file to resize
- * @param {string} id - the proprietary user id
+ * @param {String} id - the proprietary user id
  */
 async function imageProcessing(file, id) {
 
     // use directories
     let filename = file.filename;
     let extension  = file.mimetype.split('/')[1];
-
     let rootPath = process.cwd();
+
     let basePath = `${rootPath}/gallery/staging/${filename}`;
-
     let destination = `${rootPath}/gallery/companies/${id}`;
-    mkdirp(destination);
 
-    let thumbnailProperties = {
-        width: 270,
-        height: 270,
-        destination: `${destination}/thumbnail.${extension}`
-    };
+    mkdirp(destination, sharpProcessing(destination, extension, basePath));
+}
 
-    let iconProperties = {
-        width: 100,
-        height: 100,
-        destination: `${destination}/icon.${extension}`
-    };
+/**
+ * Callback utility (through "Javascript currying"). This is where the "sharp" library is leverage to
+ * start the execution logic of the image processing
+ * @param {String} destination - the folder path to store the "thumbnail" and "icon" images
+ * @param {String} extension - the file type of the image
+ * @param {String} basePath - the file path of the image to process
+ * @return {function(error, created)} - a callback function to be executed by "mkdirp"
+ */
+function sharpProcessing(destination, extension, basePath) {
 
-    try {
-        let basePipeLine = sharp(basePath);
-        await buildPipe(basePipeLine, thumbnailProperties, extension);
-        await buildPipe(basePipeLine, iconProperties, extension);
-    } catch (e) {
-        throw error(status.INTERNAL_SERVER_ERROR, 'Image processing failed', e.stack);
+    return async (error, created) => {
+
+        let thumbnailProperties = {
+            width: 270,
+            height: 270,
+            destination: `${destination}/thumbnail.${extension}`
+        };
+
+        let iconProperties = {
+            width: 100,
+            height: 100,
+            destination: `${destination}/icon.${extension}`
+        };
+
+        try {
+            let basePipeLine = sharp(basePath);
+            await buildPipe(basePipeLine, thumbnailProperties, extension);
+            await buildPipe(basePipeLine, iconProperties, extension);
+        } catch (e) {
+            throw error(status.INTERNAL_SERVER_ERROR, 'Image processing failed', e.stack);
+        }
     }
 }
+
 
 /**
  * Pipe construction from the sharp library to crop, resize and store an image
  * @private
- * @param {sharp} basePipeLine - the base pipeline that contains the path of the original file
+ * @param {Sharp} basePipeLine - the base pipeline that contains the path of the original file
  * @param {Object} properties - the properties which will be applied to the new image
  * @param {String} extension - the file extension of the original image
  */
@@ -129,7 +145,7 @@ function toFileExtension(pipe, extension) {
     if (extension === 'png'){
         return pipe.png();
     } else {
-        return pipe.jpeg({quality: 70})
+        return pipe.jpeg({quality: 80})
     }
 }
 
