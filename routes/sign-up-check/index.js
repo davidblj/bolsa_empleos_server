@@ -7,14 +7,16 @@ const handler = require(process.cwd() + '/utils/controller-handler');
 const router = express.Router();
 
 // controllers
-const getJobs = require(process.cwd() + '/controllers/search/getJobs/index');
+const signUpCheck = require(process.cwd() + '/controllers/sign-up-check/getUser');
 
-router.get('/jobs', handler(getJobs, status.OK,
+// routes
+router.get('/', handler(signUpCheck, status.OK,
     (req, res, next) => [
-        req.query.sort,
-        req.query.id,
-        req.query.offset,
-        req.query.size])
+        req.query.username,
+        req.query.email,
+        req.query.pid,
+        req.query.name
+    ])
 );
 
 module.exports = router;

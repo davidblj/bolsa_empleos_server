@@ -10,7 +10,10 @@ const log = require(process.cwd() + '/utils/debug');
 const fileSystem = require('fs');
 
 // services
-const {createCandidate, getCandidate} = require(process.cwd() + '/services/candidate');
+const {createCandidate} = require(process.cwd() + '/services/candidate');
+
+// controllers
+const getUser = require(process.cwd() + '/controllers/sign-up-check/getUser');
 
 /**
  * Controller definition to create a "candidate" user
@@ -24,21 +27,22 @@ module.exports = async (data, file) => {
     validate(data,file);
 
     let username = data.username,
-        email = data.email;
+        email = data.email,
+        pid = data.pid;
 
     log.common(
         `file: ${file.filename} \n` +
         `saved on path: ${file.path} \n` +
         `of size in bytes: ${file.size}`);
 
-    let fields = {username: username, email: email};
-    let query = buildQuery(fields);
-    let candidate = await getCandidate(query);
+    pid = parseInt(pid);
+    let fields = {username, email, pid};
+    let user = await getUser(username, email, pid, null);
 
-    if (candidate) findConflicts(candidate, fields);
+    if (user) findConflicts(user, fields);
 
-    let user = await createCandidate(data);
-    let userId = user._id;
+    let newUser = await createCandidate(data);
+    let userId = newUser._id;
 
     resumeeProcessing(file, userId);
 
@@ -59,7 +63,7 @@ function validate(data, file) {
  * area to a fixed file path: 'resumes/:id/resume'
  * @private
  * @param {File} file - the resumee file to move
- * @param {String} id - the proprietary user id
+ * @param {string} id - the proprietary user id
  */
 function resumeeProcessing(file, id) {
 
@@ -77,8 +81,8 @@ function resumeeProcessing(file, id) {
  * Callback utility (through "Javascript currying"). This callback contains
  * the actual logic to move files from an old path, to a new path.
  * @private
- * @param {String} oldPath - the original path where the current file is standing
- * @param {String} newPath - the new path where the current file will be moved to
+ * @param {string} oldPath - the original path where the current file is standing
+ * @param {string} newPath - the new path where the current file will be moved to
  * @return {function(error, created)} - a callback function to be executed by "mkdirp"
  */
 function moveFile(oldPath, newPath) {

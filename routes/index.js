@@ -11,6 +11,7 @@ const candidate = require('./candidate');
 const company = require('./company');
 const companies = require('./companies');
 const jobs = require('./jobs');
+const signUp = require('./sign-up-check');
 
 // todo(1): unexpected error handling
 // todo(2): handle a non json request
@@ -33,6 +34,9 @@ router.use('/jobs', jobs);
 
 // search
 router.use('/search', search);
+
+// sign up check
+router.use('/sign-up-check', signUp);
 
 // error handling
 router.use((err, req, res, next) => {

@@ -1,3 +1,9 @@
+### user check
+
+http://localhost:3000/sign-up-check?username=jhon
+Accept: */*
+Content-Type: application/json
+
 ### search - get companies (page 2 to page 1)
 
 http://localhost:3000/search/jobs?size=2&id=5ab0362dcfcbc50b93dfc43d&offset=-1

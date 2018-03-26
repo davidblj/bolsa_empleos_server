@@ -25,7 +25,7 @@ const findConflicts = (data, fields) => {
     let errorFound = errors.length > 0;
 
     if (errorFound) {
-        throw error(status.CONFLICT, `The following fields must be unique to be stored in the db: ${errors.join(',')}`)
+        throw error(status.CONFLICT, `The following fields were already found in a document: ${errors.join(',')}`)
     }
 };
 

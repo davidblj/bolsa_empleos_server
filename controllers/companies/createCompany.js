@@ -12,7 +12,12 @@ const {
 const log = require(process.cwd() + '/utils/debug');
 
 // services
-const {createCompany, getCompany} = require(process.cwd() + '/services/company');
+const {createCompany} = require(process.cwd() + '/services/company');
+
+// controllers
+const getUser = require(process.cwd() + '/controllers/sign-up-check/getUser');
+
+// todo(1): nit validation
 
 /**
  * Controller definition to create a "company" user
@@ -28,7 +33,6 @@ module.exports = async (data, file) => {
     let name = data.name,
         username = data.username,
         email = data.email,
-        nit = data.nit,
         filename = file.filename;
 
     log.common(
@@ -36,19 +40,19 @@ module.exports = async (data, file) => {
         `saved on path: ${file.path} \n` +
         `of size in bytes: ${file.size}`);
 
-    let fields = {name: name, username: username, email: email, nit: nit};
-    let query = buildQuery(fields);
-    let company = await getCompany(query);
+    let fields = {username, email, name};
+    let user = await getUser(username, email, null, name);
 
-    if (company) findConflicts(company, fields);
+    if (user) findConflicts(user, fields);
+    // get candidate
 
     data.logo = filename;
-    let user = await createCompany(data);
-    let userId = user.id;
+    let newUser = await createCompany(data);
+    let userId = newUser.id;
 
     await imageProcessing(file, userId);
 
-    return {Location: 'companies/' + user._id}
+    return {Location: 'companies/' + userId}
 };
 
 /**
