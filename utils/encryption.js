@@ -21,8 +21,12 @@ function generateJwt() {
     let expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);
 
+    // this.name may have a different value
+    // if a candidate or company issues
+    // this request.
     let content = {
         _id: this._id,
+        name: this.name,
         username: this.username,
         role: this.role,
         exp: parseInt(expiry.getTime()/1000)

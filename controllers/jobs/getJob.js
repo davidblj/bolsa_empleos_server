@@ -11,6 +11,6 @@ module.exports = (id) => {
 
     // the id is already verified on the "idParsing" middleware
     let query = {_id: id};
-    let projection = '-_id -applicants';
+    let projection = '-applicants';
     return getJob(query, projection);
 };

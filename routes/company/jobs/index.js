@@ -11,7 +11,12 @@ const createJob = require(process.cwd() + '/controllers/company/jobs/createJob')
 const getJobs = require(process.cwd() + '/controllers/company/jobs/getJobs');
 
 router.get('/', handler(getJobs, status.OK,
-    (req, res, next) => [req.token.username])
+    (req, res, next) => [
+        req.query.id,
+        req.query.offset,
+        req.query.size,
+        req.token.name
+    ])
 );
 
 router.post('/', handler(createJob, status.CREATED,

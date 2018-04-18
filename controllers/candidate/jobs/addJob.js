@@ -36,7 +36,7 @@ module.exports = async (userId, jobId) => {
     };
     query = {_id: jobId};
 
-    // the model validations are skipped
+    // model validations are skipped
     await updateJob(query, update);
 
     update = { $push: { jobs: jobId }};

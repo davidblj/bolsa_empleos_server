@@ -1,3 +1,10 @@
+
+### get jobs
+http://localhost:3000/company/jobs?size=2
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MjQ2ODAwMzksImlhdCI6MTUyNDA3NTIzOX0.t9wOvUbvnsdw8QyziutpFO6C2355ZvFfB8YfB8iXqtA
+
 ### user check
 
 http://localhost:3000/sign-up-check?username=jhon
@@ -35,6 +42,12 @@ Accept: */*
 Content-Type: application/json
 Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2MzOWEzYzM1NjQwNWQxNTQxZDMiLCJ1c2VybmFtZSI6IlVydWl0Iiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MTk1NzI4NTcsImlhdCI6MTUxODk2ODA1N30.wfhfmlqtOOWmubPvxIard4EfIY7iQ18aguRknuqnahE
 
+### user - job details
+
+GET http://localhost:3000/jobs/5ab0362dcfcbc50b93dfc43a
+Accept: */*
+Content-Type: application/json
+
 ### company - job creation
 
 POST http://localhost:3000/company/jobs
@@ -62,7 +75,7 @@ POST http://localhost:3000/session
 Accept: */*
 Content-Type: application/json
 
-{ "username": "Uruit", "password": "secret" }
+{ "username": "jane", "password": "omegadjb1" }
 
 ### company - getCompany
 
@@ -109,7 +122,7 @@ POST http://localhost:3000/session
 Accept: */*
 Content-Type: application/json
 
-{ "username": "Doe", "password": "secret" }
+{ "username": "david", "password": "omegadjb1" }
 
 ### candidate - user creation
 
