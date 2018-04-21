@@ -1,4 +1,5 @@
 const {
+    getSizePipe,
     mostRecentPagingPipe,
     projectionPipe } = require('../../../utils/pagination/pipes');
 const log = require(process.cwd() + '/utils/debug');
@@ -19,12 +20,18 @@ const jobModel = require(process.cwd() + '/models/company/job');
  * 10 jobs
  * @return {Promise}
  */
-module.exports = (sort, currentId, offset, pageSize) => {
+module.exports = async (sort, currentId, offset, pageSize) => {
 
     if (!pageSize) pageSize = 10;
     if (!sort) sort = 'created';
 
-    let pipe;
+    let pipe,
+        sizeDocument;
+
+    pipe = getSizePipe();
+    sizeDocument = await jobModel.aggregate(pipe).exec();
+
+    log.common('size :', sizeDocument);
 
     switch (sort) {
         case 'created':
@@ -40,5 +47,7 @@ module.exports = (sort, currentId, offset, pageSize) => {
     let aggregate = jobModel.aggregate(pipe);
 
     pipe = projectionPipe();
-    return aggregate.append(pipe).exec();
+    let items = await aggregate.append(pipe).exec();
+
+    return {'total_count': sizeDocument[0].total_count, items: items}
 };

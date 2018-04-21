@@ -3,8 +3,26 @@ const {
     skip,
     sort,
     limit,
-    project } = require('./stages');
+    project,
+    group } = require('./stages');
 let mongoose = require('mongoose');
+
+
+const projectionPipe = () => {
+    return [
+        project({ id: 1, name: 1, owner: 1, salary: 1 })
+    ]
+};
+
+const getSizePipe = () => {
+
+    return [
+        group({
+            _id: null,
+            total_count: { $sum: 1}
+        })
+    ]
+};
 
 const initPaging = (pageSize) => {
 
@@ -55,13 +73,9 @@ const mostRecentPagingPipe = (currentId, offset, pageSize) => {
     }
 };
 
-const projectionPipe = () => {
-    return [
-        project({ id: 1, name: 1, owner: 1, salary: 1 })
-    ]
-};
 
 module.exports = {
+    getSizePipe,
     mostRecentPagingPipe,
     projectionPipe
 };

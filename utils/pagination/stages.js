@@ -16,7 +16,15 @@ const limit = (size) => ({
 });
 
 const project = (projection) => ({
-   $project: projection
+    $project: projection
+});
+
+const group = (groupDef) => ({
+    $group: groupDef
+});
+
+const count = () => ({
+    $count: 'total_count'
 });
 
 module.exports = {
@@ -24,5 +32,7 @@ module.exports = {
     skip,
     sort,
     limit,
-    project
+    project,
+    group,
+    count
 };
