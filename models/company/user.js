@@ -38,7 +38,6 @@ let schema = {
     details: {
         type: String,
         required: true,
-        validate: isAlphanumeric()
     },
     website: {
         type: String,
