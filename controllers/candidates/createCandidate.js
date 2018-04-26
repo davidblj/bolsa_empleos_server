@@ -1,5 +1,4 @@
 // libraries
-const {buildQuery}= require(process.cwd() + '/utils/query');
 const mkdirp = require('mkdirp');
 const {
     findConflicts,
@@ -68,11 +67,12 @@ function validate(data, file) {
 function resumeeProcessing(file, id) {
 
     let filename = file.filename;
+    let extension  = file.mimetype.split('/')[1];
 
     let rootPath = process.cwd();
     let oldPath = `${rootPath}/resumes/staging/${filename}`;
     let destination = `${rootPath}/resumes/${id}`;
-    let newPath = `${destination}/${file.filename}`;
+    let newPath = `${destination}/cv.${extension}`;
 
     mkdirp(destination, moveFile(oldPath, newPath));
 }

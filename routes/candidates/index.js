@@ -7,6 +7,7 @@ const upload = multer('./resumes/staging');
 
 // routing
 const router = express.Router();
+const file = require('./file');
 
 // middleware
 const idParsing = require(process.cwd() + '/middleware/id-parsing');
@@ -26,5 +27,7 @@ router.use('/:userId', idParsing('userId',
 router.get('/:userId', handler(getCandidate, status.OK,
     (req, res, next) => [req.userId])
 );
+
+router.use('/:userId/file', file);
 
 module.exports = router;
