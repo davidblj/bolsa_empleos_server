@@ -68,7 +68,7 @@ let schema = {
         },
         users: [{
             type: Schema.Types.ObjectId,
-            ref: 'Candidates'
+            ref: 'Candidate'
         }]
     }
 };

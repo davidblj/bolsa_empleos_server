@@ -19,9 +19,20 @@ const updateJob = (query, update, options) => {
     return options ? modelMethod.setOptions(options).exec() : modelMethod.exec()
 };
 
+const getCandidates = async (query, projection) => {
+    let modelMethod = jobModel.findOne(query);
+
+    let options = {path: 'applicants.users'};
+    if (projection) options.select = projection;
+
+    let job = await modelMethod.populate(options).exec();
+    return job.applicants;
+};
+
 module.exports = {
     createJob: createJob,
     getJob: getJob,
     getJobs: getJobs,
-    updateJob: updateJob
+    updateJob: updateJob,
+    getCandidates: getCandidates
 };

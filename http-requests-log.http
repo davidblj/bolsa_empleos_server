@@ -1,3 +1,8 @@
+### get applicants
+http://localhost:3000/company/jobs/5ad7969f633afb26cf867c40
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MjUzMDA3MjgsImlhdCI6MTUyNDY5NTkyOH0.IFMjcuH_UU32DWIrtQIm0faU3CacSoSWwJnACBZyCwY
 
 ### get posted jobs (page 1 to page 2)
 http://localhost:3000/company/jobs?size=2&id=5ad7969f633afb26cf867c4d&offset=1
