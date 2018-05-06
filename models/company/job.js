@@ -15,7 +15,7 @@ let schema = {
     name: {
         type: String,
         required: true,
-        validate: [isAlphabetic(), lengthValidator(3,15)]
+        validate: [lengthValidator(3,40)]
     },
     owner: {
         type: String,
@@ -24,16 +24,11 @@ let schema = {
     description: {
         type: String,
         required: true,
-        validate: isAlphanumeric()
     },
     to: {
         type: String,
         required: true,
-        validator: [isAlphabetic(), match(['student', 'graduate', 'both'])]
-    },
-    languages: {
-        type: String,
-        validate: isAlphabetic()
+        validator: [isAlphabetic(), match(['Egresado', 'Practicante', 'Ambos'])]
     },
     expiry: {
         type: Date,
@@ -41,17 +36,11 @@ let schema = {
     },
     salary: {
         type: Number,
-        required: true
     },
     type: {
         type: String,
         required: true,
-        validate: isAlphabetic()
-    },
-    role: {
-        type: String,
-        required: true,
-        validate: isAlphabetic()
+        validator: [isAlphabetic(), match(['Tiempo Completo', 'Tiempo Medio', 'Contrato', 'Temporal'])]
     },
     urgent: {
         type: Boolean,
