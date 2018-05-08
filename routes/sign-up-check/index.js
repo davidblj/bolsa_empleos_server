@@ -8,7 +8,7 @@ const handler = require(process.cwd() + '/utils/controller-handler');
 const router = express.Router();
 
 // controllers
-const signUpCheck = require(process.cwd() + '/controllers/sign-up-check/getUser');
+const signUpCheck = require(process.cwd() + '/controllers/sign-up-check/signUpCheck');
 
 // routes
 router.get('/', handler(signUpCheck, status.OK,

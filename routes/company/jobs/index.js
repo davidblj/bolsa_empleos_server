@@ -32,7 +32,7 @@ router.get('/:jobId', handler(getJob, status.OK,
 );
 
 router.post('/', handler(createJob, status.CREATED,
-    (req, res, next) => [req.body, req.token.username])
+    (req, res, next) => [req.body, req.token.name])
 );
 
 module.exports = router;

@@ -15,7 +15,7 @@ const log = require(process.cwd() + '/utils/debug');
 const {createCompany} = require(process.cwd() + '/services/company');
 
 // controllers
-const getUser = require(process.cwd() + '/controllers/sign-up-check/getUser');
+const signUpCheck = require(process.cwd() + '/controllers/sign-up-check/signUpCheck');
 
 // todo(1): nit validation
 
@@ -41,7 +41,7 @@ module.exports = async (data, file) => {
         `of size in bytes: ${file.size}`);
 
     let fields = {username, email, name};
-    let user = await getUser(username, email, null, name);
+    let user = await signUpCheck(username, email, null, name);
 
     if (user) findConflicts(user, fields);
     // get candidate

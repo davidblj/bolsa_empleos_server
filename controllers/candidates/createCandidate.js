@@ -12,7 +12,7 @@ const fileSystem = require('fs');
 const {createCandidate} = require(process.cwd() + '/services/candidate');
 
 // controllers
-const getUser = require(process.cwd() + '/controllers/sign-up-check/getUser');
+const signUpCheck = require(process.cwd() + '/controllers/sign-up-check/signUpCheck');
 
 /**
  * Controller definition to create a "candidate" user
@@ -36,7 +36,7 @@ module.exports = async (data, file) => {
 
     pid = parseInt(pid);
     let fields = {username, email, pid};
-    let user = await getUser(username, email, pid, null);
+    let user = await signUpCheck(username, email, pid, null);
 
     if (user) findConflicts(user, fields);
 

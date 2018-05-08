@@ -11,6 +11,11 @@ const idParsing = require(process.cwd() + '/middleware/id-parsing');
 
 // controllers
 const getJob = require(process.cwd() + '/controllers/jobs/getJob');
+const jobRegistryCheck = require(process.cwd() + '/controllers/jobs/jobRegistryCheck');
+
+router.use('/check-job', handler(jobRegistryCheck, status.OK,
+    (req, res, next) => [req.query.name])
+);
 
 router.use('/:jobId', idParsing('jobId',
     (req, res, next) => req.params.jobId)

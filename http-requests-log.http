@@ -1,28 +1,31 @@
-### get curriculum
+### compay - get curriculum
+
 http://localhost:3000/candidates/5ae1ebca9a66182f840f6589/file
 Accept: */*
 Content-Type: application/json
 
-### get applicants
+### company - get applicants
+
 http://localhost:3000/company/jobs/5ad7969f633afb26cf867c40
 Accept: */*
 Content-Type: application/json
 Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MjUzMDA3MjgsImlhdCI6MTUyNDY5NTkyOH0.IFMjcuH_UU32DWIrtQIm0faU3CacSoSWwJnACBZyCwY
 
-### get posted jobs (page 1 to page 2)
+### company - get posted jobs (page 1 to page 2)
+
 http://localhost:3000/company/jobs?size=2&id=5ad7969f633afb26cf867c4d&offset=1
 Accept: */*
 Content-Type: application/json
 Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MjQ2ODAwMzksImlhdCI6MTUyNDA3NTIzOX0.t9wOvUbvnsdw8QyziutpFO6C2355ZvFfB8YfB8iXqtA
 
-### get posted jobs
+### company - get posted jobs
 
 http://localhost:3000/company/jobs?size=10
 Accept: */*
 Content-Type: application/json
 Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MjQ2ODAwMzksImlhdCI6MTUyNDA3NTIzOX0.t9wOvUbvnsdw8QyziutpFO6C2355ZvFfB8YfB8iXqtA
 
-### user check
+### registry - user check
 
 http://localhost:3000/sign-up-check?username=jhon
 Accept: */*
@@ -85,6 +88,12 @@ Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdmM2Mz
   "role": "desarrollador",
   "urgent": true
 }
+
+### company - check job
+
+POST http://localhost:3000/jobs/check-job?name=UI Developer
+Accept: */*
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1MjYzOTQ5MzgsImlhdCI6MTUyNTc5MDEzOX0.il5fqM6MxQG1xTNj3mWRGmk2sF8C9H5eqKT993AExJM
 
 ### company - session
 
@@ -162,5 +171,3 @@ Content-Type: application/json
   "pid": 1152209135,
   "password": "secret"
 }
-
-###
