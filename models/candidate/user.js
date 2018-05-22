@@ -47,7 +47,6 @@ let schema = {
     },
     role: {
         type: String,
-        default: 'student',
         required: true,
         validate: [isAlphabetic(), match(['student', 'graduate'])]
     },

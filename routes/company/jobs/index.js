@@ -19,6 +19,7 @@ router.get('/', handler(getJobs, status.OK,
         req.query.id,
         req.query.offset,
         req.query.size,
+        req.query.state,
         req.token.name
     ])
 );
