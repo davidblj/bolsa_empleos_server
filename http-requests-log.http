@@ -49,6 +49,13 @@ http://localhost:3000/search/jobs?size=2
 Accept: */*
 Content-Type: application/json
 
+### search - get jobs by salary
+
+http://localhost:3000/search/jobs?size=5&q[type]=Tiempo Completo,Tiempo Medio&q[audience]=Egresado
+Accept: */*
+Content-Type: application/json
+
+
 ### search - get companies
 
 http://localhost:3000/search/companies?email=david.blj95@gmail.com&username=Uruit
