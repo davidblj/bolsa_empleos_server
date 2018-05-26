@@ -2,7 +2,13 @@ const {
     getSizePipe,
     mostRecentPagingPipe,
     projectionPipe } = require('../../../utils/pagination/pipes');
-const { match } = require(process.cwd() + '/utils/pagination/stages');
+const {
+    match,
+    text,
+    _in,
+    _and } = require(process.cwd() + '/utils/pagination/stages');
+const error = require(process.cwd() + '/utils/error');
+const status = require('http-status');
 const log = require(process.cwd() + '/utils/debug');
 const jobModel = require(process.cwd() + '/models/company/job');
 
@@ -14,8 +20,7 @@ const jobModel = require(process.cwd() + '/models/company/job');
  * highest salary to the lowest, and 'popularity': from the most popular, to the least popular.
  * @param {String} [currentId] - the current id where you are standing, or the first "id" of the element in the list
  * returned by the last request. If this parameter is not provided, the first page will be returned instead
- * @param {String} [type] - the job modality that is either: ---
- * @param {String} [audience] - the type of user that a job offer requests: ---
+ * @param {String} [query] - a filter that may contain a search, a type, an audience or a salary criteria
  * @param {Number} [offset] - a positive or negative value representing the next page to jump to. A negative value
  * will jump "offset" times to the left in the current page (or id, to say so). A positive value will jump "offset"
  * times to the right in the current page
@@ -23,7 +28,7 @@ const jobModel = require(process.cwd() + '/models/company/job');
  * 10 jobs
  * @return {Promise}
  */
-module.exports = async (sort, currentId, offset, type, audience, pageSize) => {
+module.exports = async (sort, currentId, offset, query, pageSize) => {
 
     if (!pageSize) pageSize = 10;
     if (!sort) sort = 'created';
@@ -33,7 +38,7 @@ module.exports = async (sort, currentId, offset, type, audience, pageSize) => {
         pagingPipe,
         documentCount;
 
-    filteringPipe = buildFilteringPipe(type, audience);
+    filteringPipe = buildFilteringPipe(query);
     documentCount = await getQuerySize(filteringPipe);
 
     pagingPipe = buildPagingPipe(sort, currentId, offset, pageSize);
@@ -45,12 +50,18 @@ module.exports = async (sort, currentId, offset, type, audience, pageSize) => {
 };
 
 
-function buildFilteringPipe(type, audience) {
+function buildFilteringPipe(query) {
 
     let pipe = [];
-    if (type) pipe.push(matchByFieldPipe('type', type));
-    if (audience) pipe.push(matchByFieldPipe('to', audience));
-    return pipe
+
+    if (query) {
+        if (query.search) pipe.push(matchByTextStage(query.search));
+        if (query.type) pipe.push(matchByFieldStage('type', query.type));
+        if (query.audience) pipe.push(matchByFieldStage('to', query.audience));
+        if (query.salary) pipe.push(matchBySalaryRangeStage(query.salary));
+    }
+
+    return pipe;
 }
 
 function buildPagingPipe(sort, currentId, offset, pageSize) {
@@ -78,10 +89,28 @@ async function getQuerySize(pipe) {
     return querySize[0] ? querySize[0].total_count: 0;
 }
 
-function matchByFieldPipe(field, values) {
+function matchByTextStage(value) {
+    return match(text(value));
+}
 
-    let valuesArray = values.split(',');
+function matchByFieldStage(field, values) {
+
+    let arrayOfValues = values.split(',');
     let matchObject = {};
-    matchObject[field] = { $in: valuesArray};
+    matchObject[field] = _in(arrayOfValues);
+
     return match(matchObject);
+}
+
+function matchBySalaryRangeStage(salary)  {
+
+    let range = salary.split('..');
+    if (range.length === 1)
+        throw error(status.BAD_REQUEST, "The salary is not in the correct format: min..max");
+
+    let min = parseInt(range[0]) * (Math.pow(10, 6));
+    let max = parseInt(range[1]) * (Math.pow(10, 6));
+    let arrayOfValues = [{salary: {$gte: min}}, {salary: {$lte: max}}];
+
+    return match(_and(arrayOfValues))
 }

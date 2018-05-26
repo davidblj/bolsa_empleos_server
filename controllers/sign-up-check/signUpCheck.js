@@ -10,6 +10,7 @@ const { getCandidate } = require(process.cwd() + '/services/candidate');
  * Controller definition to find users through a set of criteria. A user
  * may be a company or a candidate. The sole purpose of this controller
  * is to verify the uniqueness of these fields.
+ * @function signUpCheck
  * @param {String} [username] - the username of a company or a candidate user
  * @param {String} [email] - the email of a company or a candidate user
  * @param {number} [pid] - the pid of a candidate

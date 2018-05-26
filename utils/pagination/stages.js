@@ -23,8 +23,16 @@ const group = (groupDef) => ({
     $group: groupDef
 });
 
-const count = () => ({
-    $count: 'total_count'
+const text = (searchString) => ({
+    $text: {$search: searchString}
+});
+
+const _in = (arrayOfValues) => ({
+    $in: arrayOfValues
+});
+
+const _and = (arrayOfValues) => ({
+   $and: arrayOfValues
 });
 
 module.exports = {
@@ -34,5 +42,7 @@ module.exports = {
     limit,
     project,
     group,
-    count
+    text,
+    _in,
+    _and
 };

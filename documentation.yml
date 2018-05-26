@@ -13,4 +13,5 @@ toc:
   - createCompany
   - getCompany
   - addJob
-  - getJobs
+  - jobRegistryCheck
+  - signUpCheck

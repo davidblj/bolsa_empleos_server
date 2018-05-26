@@ -16,8 +16,7 @@ router.get('/jobs', handler(getJobs, status.OK,
         req.query.sort,
         req.query.id,
         req.query.offset,
-        req.query.q ? req.query.q.type: null,
-        req.query.q ? req.query.q.audience: null,
+        req.query.q ? req.query.q: null,
         req.query.size])
 );
 
