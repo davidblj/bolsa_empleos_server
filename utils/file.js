@@ -1,3 +1,5 @@
+const mkdirp = require('mkdirp');
+const fileSystem = require('fs');
 
 /**
  * Resumee file processing. This processing just moves the resumee from the staging folder

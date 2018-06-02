@@ -1,5 +1,4 @@
 // libraries
-const mkdirp = require('mkdirp');
 const {
     findConflicts,
     findEmptyFields,
@@ -7,7 +6,6 @@ const {
     field } = require(process.cwd() + '/utils/validations/controller-validations');
 const log = require(process.cwd() + '/utils/debug');
 const { resumeeProcessing } = require(process.cwd() + '/utils/file');
-const fileSystem = require('fs');
 
 // services
 const {createCandidate} = require(process.cwd() + '/services/candidate');
