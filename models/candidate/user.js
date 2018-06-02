@@ -19,7 +19,7 @@ let schema = {
     name: {
         type: String,
         required: true,
-        validate: [isAlphabetic(), lengthValidator(3, 30)]
+        validate: [isAlphabetic(), lengthValidator(3, 50)]
     },
     username: {
         type: String,
