@@ -1,18 +1,12 @@
 // libraries
-const mongoose = require('mongoose');
-const status = require('http-status');
-const error = require(process.cwd() + '/utils/error');
 const {findEmptyFields, findEmptyArguments, field}= require(process.cwd() + '/utils/validations/controller-validations');
-const log = require(process.cwd() + '/utils/debug');
-
-// controllers
+const { resumeeProcessing } = require(process.cwd() + '/utils/file');
 
 // services
 const {updateCandidate} = require(process.cwd() + '/services/candidate');
 
-module.exports = async (data, userId) => {
+module.exports = async (data, userId, file) => {
 
-    log.common(data);
     validate(data, userId);
 
     let query = {_id: userId};
@@ -26,6 +20,10 @@ module.exports = async (data, userId) => {
     };
 
     await updateCandidate(query, update);
+
+    // if the user sent a new file, the NodeJS
+    // file system will replace that old cv
+    if (file) resumeeProcessing(file, userId);
 };
 
 function validate(data, userId) {
