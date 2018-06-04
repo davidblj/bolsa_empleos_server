@@ -50,10 +50,10 @@ function buildResponse(user, token) {
     let role = user.role;
 
     if (role === 'company') {
-        return { admin: user.admin, name: user.name, role: role, token: token};
+        return { _id: user._id, admin: user.admin, name: user.name, role: role, token: token};
 
     } else {
-        return { name: user.name, role: role, token: token};
+        return { _id: user._id, name: user.name, role: role, token: token};
     }
 }
 

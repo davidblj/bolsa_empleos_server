@@ -15,7 +15,7 @@ const authentication = require(process.cwd() + '/middleware/authentication');
 // controllers
 const updateProfile = require(process.cwd() + '/controllers/candidate/updateProfile');
 
-router.use('/', authentication(['student', 'graduate']));
+router.use('/', authentication(['Estudiante', 'Graduado']));
 
 router.put('/', upload.single('resumee'), handler(updateProfile, status.NO_CONTENT,
     (req, res, next) => [req.body, req.token._id, req.file])

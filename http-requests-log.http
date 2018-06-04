@@ -1,8 +1,3 @@
-### candidate - update profile
-
-
-### candidate - get profile
-
 
 ### compay - get curriculum
 
@@ -141,6 +136,13 @@ Content-Type: application/json
   "password": "secret"
 }
 
+### candidate - deleteJob
+
+DELETE http://localhost:3000/candidate/jobs/5b15c01e04876d271ec26e39
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNhNDEwZDAwZmEwNjJmNTc0ZjQ3MTUiLCJuYW1lIjoiRGF2aWQgSmFyYW1pbGxvIEJvbGl2YXIiLCJ1c2VybmFtZSI6ImRhdmlkIiwicm9sZSI6IkVzdHVkaWFudGUiLCJleHAiOjE1Mjg3NTc5MTAsImlhdCI6MTUyODE1MzExMH0.x95wL1d6AKvI9SVfaOVUOeuHkSFSMT1PCemhW8llla8
+
 ### candidate - getJobs
 
 GET http://localhost:3000/candidate/jobs/
@@ -162,6 +164,12 @@ Accept: */*
 Content-Type: application/json
 
 { "username": "david", "password": "omegadjb1" }
+
+### candidate - get profile
+
+GET http://localhost:3000/candidates/5aca410d00fa062f574f4715
+Accept: */*
+Content-Type: application/json
 
 ### candidate - user creation
 

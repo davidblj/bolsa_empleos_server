@@ -48,7 +48,7 @@ let schema = {
     role: {
         type: String,
         required: true,
-        validate: [isAlphabetic(), match(['student', 'graduate'])]
+        validate: [isAlphabetic(), match(['Estudiante', 'Egresado'])]
     },
     jobs: [{
         type: Schema.Types.ObjectId,
