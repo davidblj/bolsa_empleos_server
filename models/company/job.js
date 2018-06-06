@@ -1,6 +1,7 @@
 const {
     isAlphabetic,
     lengthValidator,
+    expiryValidator,
     match} = require('../../utils/validations/model-validations');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -32,6 +33,7 @@ let schema = {
     expiry: {
         type: Date,
         required: true,
+        validator: expiryValidator()
     },
     salary: {
         type: Number,

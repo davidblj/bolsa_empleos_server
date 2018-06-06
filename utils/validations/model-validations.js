@@ -1,5 +1,6 @@
 const validate = require('validator');
 
+//
 // todo(1): password validator: it must contain at least 1 number
 // todo(2): NIT or RUES validator
 // todo(3): define a cellphone or a Regex validator (and a contribution to "validator.js")
@@ -51,6 +52,11 @@ const lengthValidator = (min, max) => ({
     message: `{VALUE} must be within a range of ${min}-${max} characters`
 });
 
+const expiryValidator = () => ({
+    validator: (value) => (new Date(value).getTime() >= (new Date()).getTime()),
+    message: `{VALUE} must be a date that must have a higher value than today's date`
+});
+
 const isEmail = () => ({
     validator: (value) => validate.isEmail(value),
     message: '{VALUE} must be a valid email'
@@ -87,6 +93,7 @@ module.exports = {
     isMongoId: isMongoId,
     isAlphabetic: isAlphabetic,
     lengthValidator: lengthValidator,
+    expiryValidator: expiryValidator,
     isAlphanumeric: isAlphanumeric,
     isEmail: isEmail,
     isURL: isURL,

@@ -76,6 +76,22 @@ GET http://localhost:3000/jobs/5ab0362dcfcbc50b93dfc43a
 Accept: */*
 Content-Type: application/json
 
+### company - job update
+
+PUT http://localhost:3000/company/jobs/5b15c01e04876d271ec26e32
+Accept: */*
+Content-Type: application/json
+Authentication: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWNlNmY0NDRhMzQ1ZjI0NmY4ZmM2ZTYiLCJuYW1lIjoiR29vZ2xlIiwidXNlcm5hbWUiOiJqYW5lIiwicm9sZSI6ImNvbXBhbnkiLCJleHAiOjE1Mjg5MDMzNTgsImlhdCI6MTUyODI5ODU1OH0.98xGK4Sgb9X2XmefMBuLXyk27zA1oTy7OatGVhDwyng
+
+{
+    "name": "Senior Web Developer",
+    "description": "job description update",
+    "expiry": "2018-07-16T00:00:00.000Z",
+    "salary": "6500000",
+    "urgent": true
+}
+
+
 ### company - job creation
 
 POST http://localhost:3000/company/jobs

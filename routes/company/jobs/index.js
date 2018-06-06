@@ -13,6 +13,7 @@ const idParsing = require(process.cwd() + '/middleware/id-parsing');
 const createJob = require(process.cwd() + '/controllers/company/jobs/createJob');
 const getJobs = require(process.cwd() + '/controllers/company/jobs/getJobs');
 const getJob = require(process.cwd() + '/controllers/company/jobs/getJob');
+const updateJob = require(process.cwd() + '/controllers/company/jobs/updateJob');
 
 router.get('/', handler(getJobs, status.OK,
     (req, res, next) => [
@@ -24,6 +25,10 @@ router.get('/', handler(getJobs, status.OK,
     ])
 );
 
+router.post('/', handler(createJob, status.CREATED,
+    (req, res, next) => [req.body, req.token.name])
+);
+
 router.use('/:jobId', idParsing('jobId',
     (req, res, next) => req.params.jobId)
 );
@@ -32,8 +37,8 @@ router.get('/:jobId', handler(getJob, status.OK,
     (req, res, next) => [req.jobId])
 );
 
-router.post('/', handler(createJob, status.CREATED,
-    (req, res, next) => [req.body, req.token.name])
+router.put('/:jobId', handler(updateJob, status.NO_CONTENT,
+    (req, res, next) => [req.body, req.jobId])
 );
 
 module.exports = router;

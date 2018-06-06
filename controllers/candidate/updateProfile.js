@@ -18,8 +18,9 @@ module.exports = async (data, userId, file) => {
             role: data.role
         }
     };
+    let options = {runValidators: true};
 
-    await updateCandidate(query, update);
+    await updateCandidate(query, update, options);
 
     // if the user sent a new file, the NodeJS
     // file system will replace that old cv
