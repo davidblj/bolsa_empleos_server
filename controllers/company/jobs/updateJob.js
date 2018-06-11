@@ -1,10 +1,14 @@
 // libraries
 const {findEmptyFields, findEmptyArguments, field}= require(process.cwd() + '/utils/validations/controller-validations');
+const log = require(process.cwd() + '/utils/debug');
 
 // services
 const {updateJob} = require(process.cwd() + '/services/job');
 
 module.exports = async (data, jobId) => {
+
+    log.common(data);
+    log.common(typeof data.urgent);
 
     validate(data, jobId);
 
@@ -25,5 +29,5 @@ module.exports = async (data, jobId) => {
 
 function validate(data, jobId) {
     findEmptyArguments([field(data, 'data'), field(jobId, '_id')]);
-    findEmptyFields(data, ['name', 'description', 'expiry', 'salary', 'urgent']);
+    findEmptyFields(data, ['name', 'description', 'expiry', 'urgent']);
 }

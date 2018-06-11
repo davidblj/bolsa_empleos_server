@@ -50,7 +50,7 @@ module.exports = async (data, file) => {
     let newUser = await createCompany(data);
     let userId = newUser.id;
 
-    await imageProcessing(file, userId);
+    await imageProcessing(file, data.name);
 
     return {Location: 'companies/' + userId}
 };
@@ -69,9 +69,9 @@ function validate(data, file) {
  * different sizes on a fixed file path: 'gallery/companies/:id'
  * @private
  * @param {File} file - the original file to resize
- * @param {String} id - the proprietary user id
+ * @param {String} company - the company name
  */
-async function imageProcessing(file, id) {
+async function imageProcessing(file, company) {
 
     // use directories
     let filename = file.filename;
@@ -79,7 +79,7 @@ async function imageProcessing(file, id) {
     let rootPath = process.cwd();
 
     let basePath = `${rootPath}/gallery/staging/${filename}`;
-    let destination = `${rootPath}/gallery/companies/${id}`;
+    let destination = `${rootPath}/gallery/companies/${company}`;
 
     mkdirp(destination, sharpProcessing(destination, extension, basePath));
 }

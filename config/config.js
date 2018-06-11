@@ -12,6 +12,7 @@ module.exports = function (app) {
     // common middleware
     app.use(cors(variables.origin));
     app.use(express.static('views'));
+    app.use(express.static('gallery', {extensions: ['png', 'jpeg']}));
     app.use(express.json());
 
     // post config

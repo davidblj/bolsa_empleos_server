@@ -41,7 +41,7 @@ const findEmptyFields = (data, fields) => {
 
     fields.forEach((field) => {
         let value = data[field];
-        if (!value) errors.push(field)
+        if (!value && typeof value !== 'boolean') errors.push(field)
     });
 
     let errorFound = errors.length > 0;
@@ -61,9 +61,8 @@ const findEmptyArguments = (fields) => {
 
     let errors = [];
     fields.forEach(field => {
-        if (!field.fieldValue) {
-            errors.push(field.fieldName);
-        }
+        let value = field.fieldValue;
+        if (!value && typeof value !== 'boolean') errors.push(field.fieldName)
     });
 
     if (errors.length > 0) {
